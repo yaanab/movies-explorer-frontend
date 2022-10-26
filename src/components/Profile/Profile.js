@@ -8,7 +8,7 @@ function Profile() {
   const [isValid, setIsValid] = useState(false);
 
   return (
-    <section className="profile">
+    <main className="profile">
       <h2 className="profile__title">Привет, {name}!</h2>
       <form className="profile__form">
         <div className="profile__inputs">
@@ -40,7 +40,7 @@ function Profile() {
           </div>
         )}
       </form>
-    </section>
+    </main>
   );
 }
 
