@@ -44,7 +44,7 @@ function App() {
     },
   ]
 
-  const [loggedIn, setLoggedIn] = useState(false);
+  const [isloggedIn, setLoggedIn] = useState(false);
   const [isNavPopupOpen, setIsNavPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(true);
@@ -62,14 +62,20 @@ function App() {
       <div className="app_page">
         <Switch>
           <Route exact path="/">
-            <Header
-              loggedIn={loggedIn}
-            />
+            <div className="header__main">
+              <Header
+                isloggedIn={isloggedIn}
+                isNavPopupOpen={isNavPopupOpen}
+                onNavMenuClick={havdleNavPopupOpen}
+                onNavPopupClose={havdleNavPopupClose}
+              />
+            </div>
             <Main />
             <Footer />
           </Route>
           <Route path="/movies">
             <Header
+              isloggedIn={isloggedIn}
               isNavPopupOpen={isNavPopupOpen}
               onNavMenuClick={havdleNavPopupOpen}
               onNavPopupClose={havdleNavPopupClose}
