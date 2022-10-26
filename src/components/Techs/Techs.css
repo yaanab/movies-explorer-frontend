@@ -1,7 +1,3 @@
-.techs__block {
-  background-color: #272727;
-}
-
 .techs__content {
   margin: 0 auto;
   display: flex;
@@ -18,7 +14,6 @@
   color: #FFFFFF;
   min-height: 50px;
   width: 100%;
-  border-bottom: 1px solid #DADADA;
 }
 
 .techs__subtitle {
@@ -56,12 +51,30 @@
 }
 
 @media screen and (max-width: 375px) {
+  .techs {
+    background-color:#202020;
+  }
+
+  .techs__title {
+    border-bottom: 1px solid #000000;
+  }
+
   .techs__types {
     width: 63.5%;
   }
 }
 
-@media screen and (min-width: 375px) and (max-width: 767px) {
+@media screen and (min-width: 376px) {
+  .techs {
+    background-color:#272727;
+  }
+
+  .techs__title {
+    border-bottom: 1px solid #DADADA;
+  }
+}
+
+@media screen and (min-width: 376px) and (max-width: 767px) {
   .techs__types {
     width: 90%;
   }
