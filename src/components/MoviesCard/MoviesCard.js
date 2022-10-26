@@ -1,7 +1,6 @@
-import saveButtonInactive from "../../images/save-btn.png";
-import saveButtonActive from "../../images/save-btn-active.png";
+import saveButtonInactive from "../../images/save-btn.svg";
+import saveButtonActive from "../../images/save-btn-active.svg";
 import deleteButton from "../../images/film-delete-btn.svg";
-
 
 function MoviesCard({ card, isButtonClicked, isFilmSaved }) {
 

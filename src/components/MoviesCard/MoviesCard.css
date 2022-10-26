@@ -59,10 +59,6 @@
   opacity: 0.8;
 }
 
-.movies-card__save-film_active {
-  background: url(../../images/save-btn-active.png) center no-repeat;
-}
-
 .movies-card__image {
   width: 100%;
   object-fit: cover;

@@ -1,5 +1,5 @@
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
-import findButton from '../../images/find-button.png';
+import findButton from '../../images/find-button.svg';
 
 function SearchForm() {
   return (
