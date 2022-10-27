@@ -12,7 +12,7 @@ function Header({ isNavPopupOpen, onNavMenuClick, onNavPopupClose, isloggedIn })
   return (
     <header className="header">
       <div className="header__content">
-        <Link to="/">
+        <Link to="/" className="header__logo-link">
           <img src={logo} alt="Логотип" className="header__logo" />
         </Link>
         {!isloggedIn &&

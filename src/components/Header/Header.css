@@ -27,6 +27,12 @@
   opacity: 0.8;
 }
 
+.header__logo-link:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px #FFFFFF;
+  border-radius: 2px;
+}
+
 .header__authorization {
   display: flex;
   flex-wrap: nowrap;
@@ -80,6 +86,12 @@
 
 .header__nav-menu:hover {
   opacity: 0.8;
+}
+
+.header__nav-menu:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px #FFFFFF;
+  border-radius: 2px;
 }
 
 .header__nav-popup {

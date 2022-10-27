@@ -71,6 +71,12 @@
   opacity: 0.8;
 }
 
+.search__form-button:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px #FFFFFF;
+  border-radius: 2px;
+}
+
 .search__form-button-img {
   width: 34px;
   height: 34px;

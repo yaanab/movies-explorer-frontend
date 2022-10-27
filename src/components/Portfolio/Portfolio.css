@@ -35,6 +35,12 @@
   opacity: 0.7;
 }
 
+.portfolio__link:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px #FFFFFF;
+  border-radius: 3px;
+}
+
 .portfolio__link_underlined {
   border-bottom: 1px solid #E6E6E6;
 }

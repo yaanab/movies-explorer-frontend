@@ -21,6 +21,12 @@
   opacity: 0.7;
 }
 
+.navigation__movies-link:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px #FFFFFF;
+  border-radius: 2px;
+}
+
 .navigation__movies-link_active {
   font-weight: 500;
 }
@@ -43,6 +49,12 @@
 
 .navigation__profile:hover {
   opacity: 0.7;
+}
+
+.navigation__profile:focus {
+  outline: none;
+  box-shadow: 0 0 0 1px #FFFFFF;
+  border-radius: 50px;
 }
 
 .navigation__profile-icon {
