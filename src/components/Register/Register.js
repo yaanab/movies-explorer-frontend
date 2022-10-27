@@ -31,12 +31,12 @@ function Register() {
         linkText="Войти">
         <div className="auth-form__input-group">
           <label className="auth-form__label" htmlFor="name">Имя</label>
-          <input className="auth-form__input" onChange={handleChange} value={values.name || ""} type="text" pattern={namePattern} id="name" name="name" minLength="4" maxLength="30" required autoComplete="off" />
+          <input className="auth-form__input" onChange={handleChange} value={values.name || ""} type="text" pattern={namePattern} id="name" name="name" minLength="4" maxLength="30" required autoComplete="off"/>
           <span className={`auth-form__error ${(!isValid) && "auth-form__error_block"}`}>{errors.name === errorMessageDefault ? errorMessageName : errors.name}</span>
         </div>
         <div className="auth-form__input-group">
           <label className="auth-form__label" htmlFor="email">E-mail</label>
-          <input className="auth-form__input" onChange={handleChange} value={values.email || ""} type="email" pattern={emailPattern}  id="email" name="email" required autoComplete="off"/>
+          <input className="auth-form__input" onChange={handleChange} value={values.email || ""} type="email" pattern={emailPattern} id="email" name="email" required autoComplete="off"/>
           <span className={`auth-form__error ${(!isValid) && "auth-form__error_block"}`}>{errors.email === errorMessageDefault ? errorMessageEmail : errors.email}</span>
         </div>
         <div className="auth-form__input-group">
