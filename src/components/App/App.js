@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { Route, Switch, withRouter } from 'react-router-dom';
 import '../../index.css';
 
@@ -44,18 +44,34 @@ function App() {
     },
   ]
 
-  const [isloggedIn, setLoggedIn] = useState(false);
+  const [isloggedIn, setLoggedIn] = useState(true);
   const [isNavPopupOpen, setIsNavPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(true);
 
-  function havdleNavPopupOpen() {
+  function handleNavMenuClick() {
     setIsNavPopupOpen(true);
   }
 
-  function havdleNavPopupClose() {
+  function handleNavPopupClose() {
     setIsNavPopupOpen(false);
   }
+
+  useEffect(() => {
+    function handleEscClose(evt) {
+      if (evt.key === "Escape") {
+        handleNavPopupClose();
+      }
+    }
+
+    if (isNavPopupOpen) {
+      document.addEventListener('keydown', handleEscClose);
+    }
+
+    return () => {
+      document.removeEventListener('keydown', handleEscClose);
+    }
+  }, [isNavPopupOpen])
 
   return (
     <div className="app_content">
@@ -66,8 +82,8 @@ function App() {
               <Header
                 isloggedIn={isloggedIn}
                 isNavPopupOpen={isNavPopupOpen}
-                onNavMenuClick={havdleNavPopupOpen}
-                onNavPopupClose={havdleNavPopupClose}
+                onNavMenuClick={handleNavMenuClick}
+                onNavPopupClose={handleNavPopupClose}
               />
             </div>
             <Main />
@@ -77,8 +93,8 @@ function App() {
             <Header
               isloggedIn={isloggedIn}
               isNavPopupOpen={isNavPopupOpen}
-              onNavMenuClick={havdleNavPopupOpen}
-              onNavPopupClose={havdleNavPopupClose}
+              onNavMenuClick={handleNavMenuClick}
+              onNavPopupClose={handleNavPopupClose}
             />
             <Movies
               cards={cards}
@@ -90,9 +106,10 @@ function App() {
           </Route>
           <Route path="/saved-movies">
             <Header
+              isloggedIn={isloggedIn}
               isNavPopupOpen={isNavPopupOpen}
-              onNavMenuClick={havdleNavPopupOpen}
-              onNavPopupClose={havdleNavPopupClose}
+              onNavMenuClick={handleNavMenuClick}
+              onNavPopupClose={handleNavPopupClose}
             />
             <SavedMovies
               cards={cards}
@@ -102,9 +119,10 @@ function App() {
           </Route>
           <Route path="/profile">
             <Header
+              isloggedIn={isloggedIn}
               isNavPopupOpen={isNavPopupOpen}
-              onNavMenuClick={havdleNavPopupOpen}
-              onNavPopupClose={havdleNavPopupClose}
+              onNavMenuClick={handleNavMenuClick}
+              onNavPopupClose={handleNavPopupClose}
             />
             <Profile />
           </Route>
