@@ -12,7 +12,7 @@ function AuthForm({ title, isNameHidden, button, text, link, linkText }) {
         <div className="auth-form__inputs">
           <div className={`auth-form__input-group ${(isNameHidden) && "auth-form__input-group_block"}`}>
             <label className="auth-form__label" htmlFor="name">Имя</label>
-            <input className="auth-form__input" type="text" id="name" name="name" required />
+            <input className="auth-form__input" type="text" id="name" name="name" minLength="4" maxLength="30" required />
           </div>
           <div className="auth-form__input-group">
             <label className="auth-form__label" htmlFor="email">E-mail</label>
