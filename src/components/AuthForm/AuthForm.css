@@ -33,12 +33,12 @@
 .auth-form__inputs {
   display: flex;
   flex-direction: column;
-  gap: 25px;
 }
 
 .auth-form__input-group {
   display: flex;
   flex-direction: column;
+  min-height: 69px;
 }
 
 .auth-form__input-group_block {
@@ -83,13 +83,17 @@ input:autofill:active {
 }
 
 .auth-form__error {
-  display: block;
-  margin: 6px 0 0;
+  display: none;
+  margin: 1px 0 0;
   font-style: normal;
   font-weight: 400;
   font-size: 10px;
   line-height: 12px;
   color: #EE3465;
+}
+
+.auth-form__error_block {
+  display: block;
 }
 
 .auth-form__submit-btn {
@@ -111,6 +115,11 @@ input:autofill:active {
 
 .auth-form__submit-btn:hover {
   opacity: 0.8;
+}
+
+.auth-form__submit-btn_disabled {
+  background: #F8F8F8;
+  color: #C2C2C2;
 }
 
 .auth-form__link-block {
