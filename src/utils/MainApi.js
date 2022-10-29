@@ -16,9 +16,7 @@ export const register = (name, email, password) => {
     return fetch(`${BASE_URL}/signup`, {
       credentials: 'include',
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: headers,
       body: JSON.stringify({ name, email, password })
     })
       .then(res => testResponse(res));
@@ -28,9 +26,7 @@ export const register = (name, email, password) => {
     return fetch(`${BASE_URL}/signin`, {
       credentials: 'include',
       method: 'POST',
-      headers: {
-        'Content-Type': 'application/json'
-      },
+      headers: headers,
       body: JSON.stringify({ password, email })
     })
       .then(res => testResponse(res))
@@ -45,9 +41,7 @@ export const register = (name, email, password) => {
   export const logOut = () => {
     return fetch(`${BASE_URL}/signout`, {
       credentials: 'include',
-      headers: {
-        'Content-Type': 'application/json'
-      }
+      headers: headers,
     })
       .then(res => testResponse(res));
   }
