@@ -50,11 +50,14 @@ function App() {
   const [isNavPopupOpen, setIsNavPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(true);
-  const [isSignUpErrorMessage, setIsSignUpErrorMessage] = useState("");
+  const [isServerErrorMessage, setIsServerErrorMessage] = useState("");
   const [isServerError, setIsServerError] = useState(false);
 
   const emailPattern = "([A-z0-9_.-]{1,})@([A-z0-9_.-]{1,}).([A-z]{2,8})";
   const namePattern = "^[A-Za-zА-Яа-яё -]+$";
+  const inputValidationMessageDefault = "Введите данные в указанном формате.";
+  const inputValidationMessageName = "Имя должно содержать только латиницу, кириллицу, пробел или дефис";
+  const inputValidationMessageEmail = "Введите данные в формате e-mail";
   const serverConflictError = "Пользователь с таким email уже существует.";
   const serverValidationError = "Переданы некорректные данные.";
   const serverErrorMain = "На сервере произошла ошибка."
@@ -99,18 +102,18 @@ function App() {
       .catch((err) => {
         console.log(err);
         if (err === "Ошибка: 409") {
-          setIsSignUpErrorMessage(serverConflictError);
+          setIsServerErrorMessage(serverConflictError);
         } else if (err === "Ошибка: 400") {
-          setIsSignUpErrorMessage(serverValidationError);
+          setIsServerErrorMessage(serverValidationError);
         } else {
-          setIsSignUpErrorMessage(serverErrorMain);
+          setIsServerErrorMessage(serverErrorMain);
         }
         setIsServerError(true);
       })
       .finally(() => {
         setIsLoading(false);
         setIsServerError(false);
-        setIsSignUpErrorMessage("");
+        setIsServerErrorMessage("");
       });;
   }
 
@@ -172,9 +175,12 @@ function App() {
               onRegister={handleUserRegister}
               isLoading={isLoading}
               isServerError={isServerError}
-              isSignUpErrorMessage={isSignUpErrorMessage}
+              isServerErrorMessage={isServerErrorMessage}
               emailPattern={emailPattern}
               namePattern={namePattern}
+              inputValidationMessageDefault={inputValidationMessageDefault}
+              inputValidationMessageName={inputValidationMessageName}
+              inputValidationMessageEmail={inputValidationMessageEmail}
             />
           </Route>
           <Route path="/signin">
