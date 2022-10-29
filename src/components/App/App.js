@@ -10,6 +10,7 @@ import Profile from '../Profile/Profile';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
+import { useFormWithValidation } from '../../hooks/useForm';
 import * as mainApi from '../../utils/MainApi';
 import * as moviesApi from '../../utils/MoviesApi';
 
@@ -44,6 +45,8 @@ function App() {
       'movieId': '1233333'
     },
   ]
+
+  const { resetForm } = useFormWithValidation({});
 
   const history = useHistory();
   const [isloggedIn, setLoggedIn] = useState(true);
@@ -93,14 +96,11 @@ function App() {
     setIsLoading(true);
     mainApi.register(name, email, password)
       .then((res) => {
-        console.log(res);
-        // handleInfoToolPopupOpen();
-        // setinfoTooltipMessage('Вы успешно зарегистрировались!');
-        // setInfoTooltipImage(successfulMessage);
         history.push('/signin');
+        setIsServerError(false);
+        resetForm();
       })
       .catch((err) => {
-        console.log(err);
         if (err === "Ошибка: 409") {
           setIsServerErrorMessage(serverConflictError);
         } else if (err === "Ошибка: 400") {
@@ -112,8 +112,6 @@ function App() {
       })
       .finally(() => {
         setIsLoading(false);
-        setIsServerError(false);
-        setIsServerErrorMessage("");
       });;
   }
 

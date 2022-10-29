@@ -1,8 +1,19 @@
 import { Link } from 'react-router-dom';
 import logo from '../../images/header-logo.svg';
 
-function AuthForm({ title, onSubmit, children, isServerError, isValid, button, isLoading, serverErrorMessage, text, link, linkText }) {
-
+function AuthForm({
+  title,
+  onSubmit,
+  children,
+  isServerError,
+  serverErrorMessage,
+  isValid,
+  button,
+  isLoading,
+  text,
+  link,
+  linkText
+}) {
 
   return (
     <div className="auth-form">
