@@ -1,20 +1,21 @@
 import AuthForm from "../AuthForm/AuthForm";
 import { useFormWithValidation } from '../../hooks/useForm';
 
-function Login({ isLoading }) {
+function Login({ 
+  onLogin,
+  isLoading,
+  isServerError,
+  isServerErrorMessage,
+  emailPattern,
+  inputValidationMessageDefault,
+  inputValidationMessageEmail
+ }) {
 
-  const { values, handleChange, setValues, errors, isValid, resetForm } = useFormWithValidation({});
-
-  const emailPattern = "([A-z0-9_.-]{1,})@([A-z0-9_.-]{1,}).([A-z]{2,8})";
-  const errorMessageDefault = "Введите данные в указанном формате.";
-  const errorMessageEmail = "Введите данные в формате e-mail";
+  const { values, handleChange, errors, isValid } = useFormWithValidation({});
 
   function handleSubmit(e) {
     e.preventDefault();
-    // onSubmit(values.password, values.email);
-    // setValues({});
-    // console.log(values)
-    resetForm();
+    onLogin(values.email, values.password)
   }
 
   return (
@@ -25,13 +26,15 @@ function Login({ isLoading }) {
         isValid={isValid}
         button="Войти"
         isLoading={isLoading}
+        isServerError={isServerError}
+        serverErrorMessage={isServerErrorMessage}
         text="Ещё не зарегистрированы?"
         link="/signup"
         linkText="Регистрация">
         <div className="auth-form__input-group">
           <label className="auth-form__label" htmlFor="email">E-mail</label>
           <input className="auth-form__input" onChange={handleChange} value={values.email || ""} type="email" pattern={emailPattern}  id="email" name="email" required autoComplete="on" />
-          <span className={`auth-form__error ${(!isValid) && "auth-form__error_block"}`}>{errors.email === errorMessageDefault ? errorMessageEmail : errors.email}</span>
+          <span className={`auth-form__error ${(!isValid) && "auth-form__error_block"}`}>{inputValidationMessageDefault ? inputValidationMessageEmail : errors.email}</span>
         </div>
         <div className="auth-form__input-group">
           <label className="auth-form__label" htmlFor="password">Пароль</label>
