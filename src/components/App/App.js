@@ -11,6 +11,7 @@ import PageNotFound from '../PageNotFound/PageNotFound';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
 import { useFormWithValidation } from '../../hooks/useForm';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import * as mainApi from '../../utils/MainApi';
 import * as moviesApi from '../../utils/MoviesApi';
 
@@ -50,6 +51,7 @@ function App() {
 
   const history = useHistory();
   const [isloggedIn, setLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState({});
   const [isNavPopupOpen, setIsNavPopupOpen] = useState(false);
   const [isSendingUserDataToServer, setisSendingUserDataToServer] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(true);
@@ -147,11 +149,24 @@ function App() {
   }
 
   return (
-    <div className="app_content">
-      <div className="app_page">
-        <Switch>
-          <Route exact path="/">
-            <div className="header__main">
+    <CurrentUserContext.Provider value={currentUser}>
+      <div className="app_content">
+        <div className="app_page">
+          <Switch>
+            <Route exact path="/">
+              <div className="header__main">
+                <Header
+                  isloggedIn={isloggedIn}
+                  isNavPopupOpen={isNavPopupOpen}
+                  setIsNavPopupOpen={setIsNavPopupOpen}
+                  onNavMenuClick={handleNavMenuClick}
+                  onNavPopupClose={handleNavPopupClose}
+                />
+              </div>
+              <Main />
+              <Footer />
+            </Route>
+            <Route path="/movies">
               <Header
                 isloggedIn={isloggedIn}
                 isNavPopupOpen={isNavPopupOpen}
@@ -159,81 +174,70 @@ function App() {
                 onNavMenuClick={handleNavMenuClick}
                 onNavPopupClose={handleNavPopupClose}
               />
-            </div>
-            <Main />
-            <Footer />
-          </Route>
-          <Route path="/movies">
-            <Header
-              isloggedIn={isloggedIn}
-              isNavPopupOpen={isNavPopupOpen}
-              setIsNavPopupOpen={setIsNavPopupOpen}
-              onNavMenuClick={handleNavMenuClick}
-              onNavPopupClose={handleNavPopupClose}
-            />
-            <Movies
-              cards={cards}
-              isSendingUserDataToServer={isSendingUserDataToServer}
-              isButtonClicked={isButtonClicked}
-              isFilmSaved={false}
-            />
-            <Footer />
-          </Route>
-          <Route path="/saved-movies">
-            <Header
-              isloggedIn={isloggedIn}
-              isNavPopupOpen={isNavPopupOpen}
-              setIsNavPopupOpen={setIsNavPopupOpen}
-              onNavMenuClick={handleNavMenuClick}
-              onNavPopupClose={handleNavPopupClose}
-            />
-            <SavedMovies
-              cards={cards}
-              isFilmSaved={true}
-            />
-            <Footer />
-          </Route>
-          <Route path="/profile">
-            <Header
-              isloggedIn={isloggedIn}
-              isNavPopupOpen={isNavPopupOpen}
-              setIsNavPopupOpen={setIsNavPopupOpen}
-              onNavMenuClick={handleNavMenuClick}
-              onNavPopupClose={handleNavPopupClose}
-            />
-            <Profile/>
-          </Route>
-          <Route path="/signup">
-            <Register
-              onRegister={handleUserRegister}
-              isSendingUserDataToServer={isSendingUserDataToServer}
-              isServerError={isServerError}
-              isServerErrorMessage={isServerErrorMessage}
-              emailPattern={emailPattern}
-              namePattern={namePattern}
-              inputValidationMessageDefault={inputValidationMessageDefault}
-              inputValidationMessageName={inputValidationMessageName}
-              inputValidationMessageEmail={inputValidationMessageEmail}
-            />
-          </Route>
-          <Route path="/signin">
-            <Login
-              onLogin={handleUserLogin}
-              isSendingUserDataToServer={isSendingUserDataToServer}
-              isServerError={isServerError}
-              isServerErrorMessage={isServerErrorMessage}
-              emailPattern={emailPattern}
-              inputValidationMessageDefault={inputValidationMessageDefault}
-              inputValidationMessageName={inputValidationMessageName}
-              inputValidationMessageEmail={inputValidationMessageEmail}
-            />
-          </Route>
-          <Route>
-            <PageNotFound />
-          </Route>
-        </Switch>
+              <Movies
+                cards={cards}
+                isSendingUserDataToServer={isSendingUserDataToServer}
+                isButtonClicked={isButtonClicked}
+                isFilmSaved={false}
+              />
+              <Footer />
+            </Route>
+            <Route path="/saved-movies">
+              <Header
+                isloggedIn={isloggedIn}
+                isNavPopupOpen={isNavPopupOpen}
+                setIsNavPopupOpen={setIsNavPopupOpen}
+                onNavMenuClick={handleNavMenuClick}
+                onNavPopupClose={handleNavPopupClose}
+              />
+              <SavedMovies
+                cards={cards}
+                isFilmSaved={true}
+              />
+              <Footer />
+            </Route>
+            <Route path="/profile">
+              <Header
+                isloggedIn={isloggedIn}
+                isNavPopupOpen={isNavPopupOpen}
+                setIsNavPopupOpen={setIsNavPopupOpen}
+                onNavMenuClick={handleNavMenuClick}
+                onNavPopupClose={handleNavPopupClose}
+              />
+              <Profile />
+            </Route>
+            <Route path="/signup">
+              <Register
+                onRegister={handleUserRegister}
+                isSendingUserDataToServer={isSendingUserDataToServer}
+                isServerError={isServerError}
+                isServerErrorMessage={isServerErrorMessage}
+                emailPattern={emailPattern}
+                namePattern={namePattern}
+                inputValidationMessageDefault={inputValidationMessageDefault}
+                inputValidationMessageName={inputValidationMessageName}
+                inputValidationMessageEmail={inputValidationMessageEmail}
+              />
+            </Route>
+            <Route path="/signin">
+              <Login
+                onLogin={handleUserLogin}
+                isSendingUserDataToServer={isSendingUserDataToServer}
+                isServerError={isServerError}
+                isServerErrorMessage={isServerErrorMessage}
+                emailPattern={emailPattern}
+                inputValidationMessageDefault={inputValidationMessageDefault}
+                inputValidationMessageName={inputValidationMessageName}
+                inputValidationMessageEmail={inputValidationMessageEmail}
+              />
+            </Route>
+            <Route>
+              <PageNotFound />
+            </Route>
+          </Switch>
+        </div>
       </div>
-    </div>
+    </CurrentUserContext.Provider>
   );
 }
 

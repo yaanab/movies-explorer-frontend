@@ -3,7 +3,7 @@ import logo from '../../images/header-logo.svg';
 import menuIcon from '../../images/menu-icon.svg';
 import Navigation from '../Navigation/Navigation';
 
-function Header({ isNavPopupOpen, setIsNavPopupOpen, onNavMenuClick, onNavPopupClose, isloggedIn }) {
+function Header({ isNavPopupOpen, setIsNavPopupOpen, onNavMenuClick, onNavPopupClose, isLoggedIn }) {
 
   function stopPropagation(e) {
     e.stopPropagation();
@@ -15,7 +15,7 @@ function Header({ isNavPopupOpen, setIsNavPopupOpen, onNavMenuClick, onNavPopupC
         <Link to="/" className="header__logo-link">
           <img src={logo} alt="Логотип" className="header__logo" />
         </Link>
-        {!isloggedIn &&
+        {!isLoggedIn &&
           <div className="header__authorization">
             <Link to="signup" className="header__auth-link">
               Регистрация
@@ -25,7 +25,7 @@ function Header({ isNavPopupOpen, setIsNavPopupOpen, onNavMenuClick, onNavPopupC
             </Link>
           </div>
         }
-        {isloggedIn &&
+        {isLoggedIn &&
           <>
             <div className="header__open-nav">
               <Navigation
