@@ -50,8 +50,10 @@ function App() {
   const { resetForm } = useFormWithValidation({});
 
   const history = useHistory();
-  const [isloggedIn, setLoggedIn] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
   const [isNavPopupOpen, setIsNavPopupOpen] = useState(false);
   const [isSendingUserDataToServer, setisSendingUserDataToServer] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(true);
@@ -68,6 +70,32 @@ function App() {
   const serverErrorMain = "На сервере произошла ошибка."
   const serverErrorToken = "При авторизации произошла ошибка."
   const serverErrorLogin = "Неправильные email или пароль."
+
+  useEffect(() => {
+    const jwt = localStorage.getItem('jwt');
+    if (jwt) {
+      mainApi.getUserInfo()
+        .then((res) => {
+          if (res) {
+            setCurrentUser(res);
+            setIsLoggedIn(true);
+            history.push('/');
+          }
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    if (isLoggedIn) {
+      mainApi.getUserInfo()
+        .then((user) => {
+          setCurrentUser(user);
+          console.log(user)
+        })
+        .catch((err) => console.log(err));
+    }
+  }, [isLoggedIn]);
 
   function handleNavMenuClick() {
     setIsNavPopupOpen(true);
@@ -124,8 +152,7 @@ function App() {
     mainApi.authorize(email, password)
       .then((res) => {
         if (res.token) {
-          setLoggedIn(true);
-          // setEmail(email);
+          setIsLoggedIn(true);
           history.push('/movies');
           setIsServerError(false);
           resetForm();
@@ -135,7 +162,6 @@ function App() {
         }
       })
       .catch((err) => {
-        console.log(err)
         if (err === "Ошибка: 401") {
           setIsServerErrorMessage(serverErrorLogin);
         } else {
@@ -156,7 +182,7 @@ function App() {
             <Route exact path="/">
               <div className="header__main">
                 <Header
-                  isloggedIn={isloggedIn}
+                  isLoggedIn={isLoggedIn}
                   isNavPopupOpen={isNavPopupOpen}
                   setIsNavPopupOpen={setIsNavPopupOpen}
                   onNavMenuClick={handleNavMenuClick}
@@ -168,7 +194,7 @@ function App() {
             </Route>
             <Route path="/movies">
               <Header
-                isloggedIn={isloggedIn}
+                isLoggedIn={isLoggedIn}
                 isNavPopupOpen={isNavPopupOpen}
                 setIsNavPopupOpen={setIsNavPopupOpen}
                 onNavMenuClick={handleNavMenuClick}
@@ -184,7 +210,7 @@ function App() {
             </Route>
             <Route path="/saved-movies">
               <Header
-                isloggedIn={isloggedIn}
+                isLoggedIn={isLoggedIn}
                 isNavPopupOpen={isNavPopupOpen}
                 setIsNavPopupOpen={setIsNavPopupOpen}
                 onNavMenuClick={handleNavMenuClick}
@@ -198,7 +224,7 @@ function App() {
             </Route>
             <Route path="/profile">
               <Header
-                isloggedIn={isloggedIn}
+                isLoggedIn={isLoggedIn}
                 isNavPopupOpen={isNavPopupOpen}
                 setIsNavPopupOpen={setIsNavPopupOpen}
                 onNavMenuClick={handleNavMenuClick}
