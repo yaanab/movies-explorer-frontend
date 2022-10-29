@@ -49,9 +49,9 @@ function App() {
   const { resetForm } = useFormWithValidation({});
 
   const history = useHistory();
-  const [isloggedIn, setLoggedIn] = useState(true);
+  const [isloggedIn, setLoggedIn] = useState(false);
   const [isNavPopupOpen, setIsNavPopupOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isSendingUserDataToServer, setisSendingUserDataToServer] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(true);
   const [isServerErrorMessage, setIsServerErrorMessage] = useState("");
   const [isServerError, setIsServerError] = useState(false);
@@ -64,9 +64,8 @@ function App() {
   const serverConflictError = "Пользователь с таким email уже существует.";
   const serverValidationError = "Переданы некорректные данные.";
   const serverErrorMain = "На сервере произошла ошибка."
-
-
-
+  const serverErrorToken = "При авторизации произошла ошибка."
+  const serverErrorLogin = "Неправильные email или пароль."
 
   function handleNavMenuClick() {
     setIsNavPopupOpen(true);
@@ -93,7 +92,7 @@ function App() {
   }, [isNavPopupOpen])
 
   function handleUserRegister(name, email, password) {
-    setIsLoading(true);
+    setisSendingUserDataToServer(true);
     mainApi.register(name, email, password)
       .then((res) => {
         history.push('/signin');
@@ -111,8 +110,40 @@ function App() {
         setIsServerError(true);
       })
       .finally(() => {
-        setIsLoading(false);
+        setisSendingUserDataToServer(false);
       });;
+  }
+
+  function handleUserLogin(email, password) {
+    if (!password || !email) {
+      return;
+    }
+    setisSendingUserDataToServer(true);
+    mainApi.authorize(email, password)
+      .then((res) => {
+        if (res.token) {
+          setLoggedIn(true);
+          // setEmail(email);
+          history.push('/movies');
+          setIsServerError(false);
+          resetForm();
+        } else if (!res.token) {
+          setIsServerErrorMessage(serverErrorToken);
+          setIsServerError(true);
+        }
+      })
+      .catch((err) => {
+        console.log(err)
+        if (err === "Ошибка: 401") {
+          setIsServerErrorMessage(serverErrorLogin);
+        } else {
+          setIsServerErrorMessage(serverErrorMain);
+        }
+        setIsServerError(true);
+      })
+      .finally(() => {
+        setisSendingUserDataToServer(false);
+      });
   }
 
   return (
@@ -140,7 +171,7 @@ function App() {
             />
             <Movies
               cards={cards}
-              isLoading={isLoading}
+              isSendingUserDataToServer={isSendingUserDataToServer}
               isButtonClicked={isButtonClicked}
               isFilmSaved={false}
             />
@@ -171,7 +202,7 @@ function App() {
           <Route path="/signup">
             <Register
               onRegister={handleUserRegister}
-              isLoading={isLoading}
+              isSendingUserDataToServer={isSendingUserDataToServer}
               isServerError={isServerError}
               isServerErrorMessage={isServerErrorMessage}
               emailPattern={emailPattern}
@@ -183,7 +214,14 @@ function App() {
           </Route>
           <Route path="/signin">
             <Login
-              isLoading={isLoading}
+              onLogin={handleUserLogin}
+              isSendingUserDataToServer={isSendingUserDataToServer}
+              isServerError={isServerError}
+              isServerErrorMessage={isServerErrorMessage}
+              emailPattern={emailPattern}
+              inputValidationMessageDefault={inputValidationMessageDefault}
+              inputValidationMessageName={inputValidationMessageName}
+              inputValidationMessageEmail={inputValidationMessageEmail}
             />
           </Route>
           <Route>

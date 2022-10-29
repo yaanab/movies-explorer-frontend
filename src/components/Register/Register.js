@@ -3,7 +3,7 @@ import { useFormWithValidation } from '../../hooks/useForm';
 
 function Register({
   onRegister,
-  isLoading,
+  isSendingUserDataToServer,
   isServerError,
   isServerErrorMessage,
   emailPattern,
@@ -28,7 +28,7 @@ function Register({
         isValid={isValid}
         buttonDefault="Зарегистрироваться"
         buttonConnectionToServer = "Регистрация..."
-        isLoading={isLoading}
+        isSendingUserDataToServer={isSendingUserDataToServer}
         isServerError={isServerError}
         serverErrorMessage={isServerErrorMessage}
         text="Уже зарегистрированы?"

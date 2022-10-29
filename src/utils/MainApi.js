@@ -22,12 +22,12 @@ export const register = (name, email, password) => {
       .then(res => testResponse(res));
   }
 
-  export const authorize = (password, email) => {
+  export const authorize = (email, password) => {
     return fetch(`${BASE_URL}/signin`, {
       credentials: 'include',
       method: 'POST',
       headers: headers,
-      body: JSON.stringify({ password, email })
+      body: JSON.stringify({ email, password })
     })
       .then(res => testResponse(res))
       .then((data) => {

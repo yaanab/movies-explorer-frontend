@@ -10,7 +10,7 @@ function AuthForm({
   isValid,
   buttonDefault,
   buttonConnectionToServer,
-  isLoading,
+  isSendingUserDataToServer,
   text,
   link,
   linkText
@@ -30,8 +30,8 @@ function AuthForm({
           <span className={`auth-form__server-error ${(isServerError) && "auth-form__server-error_block"}`}>
             {serverErrorMessage}
           </span>
-          <button type="submit" className={`auth-form__submit-btn ${(!isValid || isLoading) && "auth-form__submit-btn_disabled"}`} disabled={!isValid}>
-            {!isLoading ? buttonDefault : buttonConnectionToServer}
+          <button type="submit" className={`auth-form__submit-btn ${(!isValid || isSendingUserDataToServer) && "auth-form__submit-btn_disabled"}`} disabled={!isValid}>
+            {!isSendingUserDataToServer ? buttonDefault : buttonConnectionToServer}
           </button>
         </div>
       </form>
