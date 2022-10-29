@@ -3,7 +3,7 @@ import logo from '../../images/header-logo.svg';
 import menuIcon from '../../images/menu-icon.svg';
 import Navigation from '../Navigation/Navigation';
 
-function Header({ isNavPopupOpen, onNavMenuClick, onNavPopupClose, isloggedIn }) {
+function Header({ isNavPopupOpen, setIsNavPopupOpen, onNavMenuClick, onNavPopupClose, isloggedIn }) {
 
   function stopPropagation(e) {
     e.stopPropagation();
@@ -28,14 +28,20 @@ function Header({ isNavPopupOpen, onNavMenuClick, onNavPopupClose, isloggedIn })
         {isloggedIn &&
           <>
             <div className="header__open-nav">
-              <Navigation />
+              <Navigation
+                isNavPopupOpen={isNavPopupOpen}
+                setIsNavPopupOpen={setIsNavPopupOpen}
+              />
             </div>
             <button type="button" className="header__nav-menu" onClick={onNavMenuClick}>
               <img src={menuIcon} alt="Кнопка открытия меню навигации" className="header__nav-menu-img" />
             </button>
             <div onClick={onNavPopupClose} className={`header__nav-popup ${isNavPopupOpen && "header__nav-popup_opened"}`}>
               <div onClick={stopPropagation} className="header__nav-popup-container">
-                <Navigation isNavPopupOpen={isNavPopupOpen} />
+                <Navigation
+                  isNavPopupOpen={isNavPopupOpen}
+                  setIsNavPopupOpen={setIsNavPopupOpen}
+                />
                 <button onClick={onNavPopupClose} aria-label="Закрыть" type="button" className="header__nav-popup-close-btn"></button>
               </div>
             </div>

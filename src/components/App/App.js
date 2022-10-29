@@ -155,6 +155,7 @@ function App() {
               <Header
                 isloggedIn={isloggedIn}
                 isNavPopupOpen={isNavPopupOpen}
+                setIsNavPopupOpen={setIsNavPopupOpen}
                 onNavMenuClick={handleNavMenuClick}
                 onNavPopupClose={handleNavPopupClose}
               />
@@ -166,6 +167,7 @@ function App() {
             <Header
               isloggedIn={isloggedIn}
               isNavPopupOpen={isNavPopupOpen}
+              setIsNavPopupOpen={setIsNavPopupOpen}
               onNavMenuClick={handleNavMenuClick}
               onNavPopupClose={handleNavPopupClose}
             />
@@ -181,6 +183,7 @@ function App() {
             <Header
               isloggedIn={isloggedIn}
               isNavPopupOpen={isNavPopupOpen}
+              setIsNavPopupOpen={setIsNavPopupOpen}
               onNavMenuClick={handleNavMenuClick}
               onNavPopupClose={handleNavPopupClose}
             />
@@ -194,10 +197,11 @@ function App() {
             <Header
               isloggedIn={isloggedIn}
               isNavPopupOpen={isNavPopupOpen}
+              setIsNavPopupOpen={setIsNavPopupOpen}
               onNavMenuClick={handleNavMenuClick}
               onNavPopupClose={handleNavPopupClose}
             />
-            <Profile />
+            <Profile/>
           </Route>
           <Route path="/signup">
             <Register
