@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
-import { Route, Switch, withRouter } from 'react-router-dom';
+import { Route, Switch, withRouter, useHistory } from 'react-router-dom';
 import '../../index.css';
-
 import Header from '../Header/Header';
 import Footer from '../Footer/Footer';
 import Main from '../Main/Main';
@@ -11,6 +10,8 @@ import Profile from '../Profile/Profile';
 import PageNotFound from '../PageNotFound/PageNotFound';
 import Login from '../Login/Login';
 import Register from '../Register/Register';
+import * as mainApi from '../../utils/MainApi';
+import * as moviesApi from '../../utils/MoviesApi';
 
 import movieImg1 from "../../images/movie-img-1.png";
 import movieImg2 from "../../images/movie-img-2.png";
@@ -44,10 +45,22 @@ function App() {
     },
   ]
 
+  const history = useHistory();
   const [isloggedIn, setLoggedIn] = useState(true);
   const [isNavPopupOpen, setIsNavPopupOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(true);
+  const [isSignUpErrorMessage, setIsSignUpErrorMessage] = useState("");
+  const [isServerError, setIsServerError] = useState(false);
+
+  const emailPattern = "([A-z0-9_.-]{1,})@([A-z0-9_.-]{1,}).([A-z]{2,8})";
+  const namePattern = "^[A-Za-zА-Яа-яё -]+$";
+  const serverConflictError = "Пользователь с таким email уже существует.";
+  const serverValidationError = "Переданы некорректные данные.";
+  const serverErrorMain = "На сервере произошла ошибка."
+
+
+
 
   function handleNavMenuClick() {
     setIsNavPopupOpen(true);
@@ -72,6 +85,34 @@ function App() {
       document.removeEventListener('keydown', handleEscClose);
     }
   }, [isNavPopupOpen])
+
+  function handleUserRegister(name, email, password) {
+    setIsLoading(true);
+    mainApi.register(name, email, password)
+      .then((res) => {
+        console.log(res);
+        // handleInfoToolPopupOpen();
+        // setinfoTooltipMessage('Вы успешно зарегистрировались!');
+        // setInfoTooltipImage(successfulMessage);
+        history.push('/signin');
+      })
+      .catch((err) => {
+        console.log(err);
+        if (err === "Ошибка: 409") {
+          setIsSignUpErrorMessage(serverConflictError);
+        } else if (err === "Ошибка: 400") {
+          setIsSignUpErrorMessage(serverValidationError);
+        } else {
+          setIsSignUpErrorMessage(serverErrorMain);
+        }
+        setIsServerError(true);
+      })
+      .finally(() => {
+        setIsLoading(false);
+        setIsServerError(false);
+        setIsSignUpErrorMessage("");
+      });;
+  }
 
   return (
     <div className="app_content">
@@ -127,10 +168,19 @@ function App() {
             <Profile />
           </Route>
           <Route path="/signup">
-            <Register />
+            <Register
+              onRegister={handleUserRegister}
+              isLoading={isLoading}
+              isServerError={isServerError}
+              isSignUpErrorMessage={isSignUpErrorMessage}
+              emailPattern={emailPattern}
+              namePattern={namePattern}
+            />
           </Route>
           <Route path="/signin">
-            <Login />
+            <Login
+              isLoading={isLoading}
+            />
           </Route>
           <Route>
             <PageNotFound />

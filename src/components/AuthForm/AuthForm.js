@@ -1,16 +1,8 @@
 import { Link } from 'react-router-dom';
-import { useFormWithValidation } from '../../hooks/useForm';
 import logo from '../../images/header-logo.svg';
 
-function AuthForm({ title, onSubmit, children, isValid, button, text, link, linkText }) {
-  // const {values, handleChange, setValues, errors, isValid, resetForm } = useFormWithValidation({});
+function AuthForm({ title, onSubmit, children, isServerResponse200, isValid, button, isLoading, text, link, linkText }) {
 
-  // function handleSubmit(e) {
-    // e.preventDefault();
-    // onSubmit(values.password, values.email);
-    // setValues({});
-    // console.log(values)
-  // }
 
   return (
     <div className="auth-form">
@@ -37,7 +29,10 @@ function AuthForm({ title, onSubmit, children, isValid, button, text, link, link
             <span className={`auth-form__error ${(!isValid) && "auth-form__error_block"}`}>{errors.password}</span>
           </div> */}
         </div>
-        <button type="submit" className={`auth-form__submit-btn ${(!isValid) && "auth-form__submit-btn_disabled"}`} disabled={!isValid}>{button}</button>
+        <div className="auth-form__button-area">
+          <span className={`auth-form__server-error ${(!isServerResponse200) && "auth-form__server-error_block"}`}>"a вот здесь у нас ошибка"</span>
+          <button type="submit" className={`auth-form__submit-btn ${(!isValid || isLoading) && "auth-form__submit-btn_disabled"}`} disabled={!isValid}>{button}</button>
+        </div>
       </form>
       <div className="auth-form__link-block">
         <p className="auth-form__text">{text}</p>

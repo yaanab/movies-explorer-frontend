@@ -1,22 +1,21 @@
 import AuthForm from "../AuthForm/AuthForm";
 import { useFormWithValidation } from '../../hooks/useForm';
 
-function Register() {
+function Register({ onRegister, isLoading, isServerError, isSignUpErrorMessage, emailPattern, namePattern }) {
 
   const { values, handleChange, setValues, errors, isValid, resetForm } = useFormWithValidation({});
 
-  const emailPattern = "([A-z0-9_.-]{1,})@([A-z0-9_.-]{1,}).([A-z]{2,8})";
-  const namePattern = "^[A-Za-zА-Яа-яё -]+$";
+  // const emailPattern = "([A-z0-9_.-]{1,})@([A-z0-9_.-]{1,}).([A-z]{2,8})";
+  // const namePattern = "^[A-Za-zА-Яа-яё -]+$";
   const errorMessageDefault = "Введите данные в указанном формате.";
   const errorMessageName = "Имя должно содержать только латиницу, кириллицу, пробел или дефис";
   const errorMessageEmail = "Введите данные в формате e-mail";
 
   function handleSubmit(e) {
     e.preventDefault();
-    // onSubmit(values.password, values.email);
-    // setValues({});
-    // console.log(values)
-    resetForm();
+    onRegister(values.name, values.email, values.password)
+    console.log(values)
+    // resetForm();
   }
 
   return (
@@ -24,8 +23,11 @@ function Register() {
       <AuthForm
         title="Добро пожаловать!"
         onSubmit={handleSubmit}
+        isServerError={isLoading}
         isValid={isValid}
         button="Зарегистрироваться"
+        isLoading={isLoading}
+        ErrorMessage={isSignUpErrorMessage}
         text="Уже зарегистрированы?"
         link="/signin"
         linkText="Войти">

@@ -1,4 +1,6 @@
-const BASE_URL = 'https://api.yaana.movies.nomoredomains.icu';
+// const BASE_URL = 'https://api.yaana.movies.nomoredomains.icu';
+const BASE_URL = 'http://localhost:3000';
+
 const headers = {
     'Content-Type': 'application/json'
   };
@@ -10,14 +12,14 @@ const testResponse = (res) => {
   return Promise.reject(`Ошибка: ${res.status}`)
 }
 
-export const register = (password, email) => {
+export const register = (name, email, password) => {
     return fetch(`${BASE_URL}/signup`, {
       credentials: 'include',
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
       },
-      body: JSON.stringify({ password, email })
+      body: JSON.stringify({ name, email, password })
     })
       .then(res => testResponse(res));
   }

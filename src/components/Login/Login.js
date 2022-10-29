@@ -1,7 +1,7 @@
 import AuthForm from "../AuthForm/AuthForm";
 import { useFormWithValidation } from '../../hooks/useForm';
 
-function Login() {
+function Login({ isLoading }) {
 
   const { values, handleChange, setValues, errors, isValid, resetForm } = useFormWithValidation({});
 
@@ -24,6 +24,7 @@ function Login() {
         onSubmit={handleSubmit}
         isValid={isValid}
         button="Войти"
+        isLoading={isLoading}
         text="Ещё не зарегистрированы?"
         link="/signup"
         linkText="Регистрация">
