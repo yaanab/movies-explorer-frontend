@@ -8,7 +8,8 @@ function AuthForm({
   isServerError,
   serverErrorMessage,
   isValid,
-  button,
+  buttonDefault,
+  buttonConnectionToServer,
   isLoading,
   text,
   link,
@@ -26,8 +27,12 @@ function AuthForm({
           {children}
         </div>
         <div className="auth-form__button-area">
-          <span className={`auth-form__server-error ${(isServerError) && "auth-form__server-error_block"}`}>{serverErrorMessage}</span>
-          <button type="submit" className={`auth-form__submit-btn ${(!isValid || isLoading) && "auth-form__submit-btn_disabled"}`} disabled={!isValid}>{button}</button>
+          <span className={`auth-form__server-error ${(isServerError) && "auth-form__server-error_block"}`}>
+            {serverErrorMessage}
+          </span>
+          <button type="submit" className={`auth-form__submit-btn ${(!isValid || isLoading) && "auth-form__submit-btn_disabled"}`} disabled={!isValid}>
+            {!isLoading ? buttonDefault : buttonConnectionToServer}
+          </button>
         </div>
       </form>
       <div className="auth-form__link-block">
