@@ -19,7 +19,13 @@ export const register = (name, email, password) => {
     headers: headers,
     body: JSON.stringify({ name, email, password })
   })
-    .then(res => testResponse(res));
+    .then(res => testResponse(res))
+    .then((data) => {
+      if (data.token) {
+        localStorage.setItem('jwt', data.token,);
+        return data;
+      }
+    });
 }
 
 export const authorize = (email, password) => {
@@ -31,7 +37,6 @@ export const authorize = (email, password) => {
   })
     .then(res => testResponse(res))
     .then((data) => {
-      console.log(data)
       if (data.token) {
         localStorage.setItem('jwt', data.token,);
         return data;

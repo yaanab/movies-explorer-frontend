@@ -128,15 +128,24 @@ function App() {
     setisSendingUserDataToServer(true);
     mainApi.register(name, email, password)
       .then((res) => {
-        history.push('/signin');
-        setIsServerErrorRegister(false);
-        resetForm();
+        if (res.token) {
+          console.log(res.token);
+          setIsLoggedIn(true);
+          history.push('/movies');
+          setIsServerErrorLogin(false);
+          resetForm();
+        } else if (!res.token) {
+          setIsServerErrorMessage(serverErrorToken);
+          setIsServerErrorLogin(true);
+        }
       })
       .catch((err) => {
         if (err === "Ошибка: 409") {
           setIsServerErrorMessage(serverConflictError);
         } else if (err === "Ошибка: 400") {
           setIsServerErrorMessage(serverValidationError);
+        } else if (err === "Ошибка: 401") {
+          setIsServerErrorMessage(serverErrorLogin);
         } else {
           setIsServerErrorMessage(serverErrorMain);
         }
