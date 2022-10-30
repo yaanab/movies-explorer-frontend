@@ -52,13 +52,14 @@ function App() {
   const history = useHistory();
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState({});
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
   const [isNavPopupOpen, setIsNavPopupOpen] = useState(false);
   const [isSendingUserDataToServer, setisSendingUserDataToServer] = useState(false);
   const [isButtonClicked, setIsButtonClicked] = useState(true);
   const [isServerErrorMessage, setIsServerErrorMessage] = useState("");
-  const [isServerError, setIsServerError] = useState(false);
+  const [isServerErrorRegister, setIsServerErrorRegister] = useState(false);
+  const [isServerErrorLogin, setIsServerErrorLogin] = useState(false);
+  const [isServerErrorProfile, setIsServerErrorProfile] = useState(false);
+  const [isEditProfile, setIsEditProfile] = useState(false);
 
   const emailPattern = "([A-z0-9_.-]{1,})@([A-z0-9_.-]{1,}).([A-z]{2,8})";
   const namePattern = "^[A-Za-zА-Яа-яё -]+$";
@@ -70,6 +71,7 @@ function App() {
   const serverErrorMain = "На сервере произошла ошибка."
   const serverErrorToken = "При авторизации произошла ошибка."
   const serverErrorLogin = "Неправильные email или пароль."
+  const serverErrorUpdateUser = "При обновлении профиля произошла ошибка."
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
@@ -79,7 +81,7 @@ function App() {
           if (res) {
             setCurrentUser(res);
             setIsLoggedIn(true);
-            history.push('/');
+            // history.push('/');
           }
         })
         .catch((err) => console.log(err));
@@ -126,7 +128,7 @@ function App() {
     mainApi.register(name, email, password)
       .then((res) => {
         history.push('/signin');
-        setIsServerError(false);
+        setIsServerErrorRegister(false);
         resetForm();
       })
       .catch((err) => {
@@ -137,7 +139,7 @@ function App() {
         } else {
           setIsServerErrorMessage(serverErrorMain);
         }
-        setIsServerError(true);
+        setIsServerErrorRegister(true);
       })
       .finally(() => {
         setisSendingUserDataToServer(false);
@@ -154,11 +156,11 @@ function App() {
         if (res.token) {
           setIsLoggedIn(true);
           history.push('/movies');
-          setIsServerError(false);
+          setIsServerErrorLogin(false);
           resetForm();
         } else if (!res.token) {
           setIsServerErrorMessage(serverErrorToken);
-          setIsServerError(true);
+          setIsServerErrorLogin(true);
         }
       })
       .catch((err) => {
@@ -167,11 +169,39 @@ function App() {
         } else {
           setIsServerErrorMessage(serverErrorMain);
         }
-        setIsServerError(true);
+        setIsServerErrorLogin(true);
       })
       .finally(() => {
         setisSendingUserDataToServer(false);
       });
+  }
+
+  function onSetIsEditUserProfile() {
+    setIsEditProfile(true);
+  }
+
+  function onUpdateUser(name, email) {
+    setisSendingUserDataToServer(true);
+    mainApi
+      .editProfile(name, email)
+      .then((user) => {
+        setCurrentUser(user);
+        setIsServerErrorProfile(false);
+        setIsEditProfile(false);
+      })
+      .catch((err) => {
+        console.log(err)
+        if (err === "Ошибка: 409") {
+          setIsServerErrorMessage(serverConflictError);
+        } else if (err === "Ошибка: 400") {
+          setIsServerErrorMessage(serverValidationError);
+        } else {
+          setIsServerErrorMessage(serverErrorUpdateUser);
+        }
+        setIsServerErrorProfile(true);
+      })
+      .finally(() =>
+        setisSendingUserDataToServer(false));
   }
 
   return (
@@ -230,13 +260,25 @@ function App() {
                 onNavMenuClick={handleNavMenuClick}
                 onNavPopupClose={handleNavPopupClose}
               />
-              <Profile />
+              <Profile
+                isEditProfile={isEditProfile}
+                handleEditProfile={onSetIsEditUserProfile}
+                emailPattern={emailPattern}
+                namePattern={namePattern}
+                onUpdateUser={onUpdateUser}
+                isSendingUserDataToServer={isSendingUserDataToServer}
+                isServerError={isServerErrorProfile}
+                serverErrorMessage={isServerErrorMessage}
+                inputValidationMessageDefault={inputValidationMessageDefault}
+                inputValidationMessageName={inputValidationMessageName}
+                inputValidationMessageEmail={inputValidationMessageEmail}
+              />
             </Route>
             <Route path="/signup">
               <Register
                 onRegister={handleUserRegister}
                 isSendingUserDataToServer={isSendingUserDataToServer}
-                isServerError={isServerError}
+                isServerErrorRegister={isServerErrorRegister}
                 isServerErrorMessage={isServerErrorMessage}
                 emailPattern={emailPattern}
                 namePattern={namePattern}
@@ -249,7 +291,7 @@ function App() {
               <Login
                 onLogin={handleUserLogin}
                 isSendingUserDataToServer={isSendingUserDataToServer}
-                isServerError={isServerError}
+                isServerErrorLogin={isServerErrorLogin}
                 isServerErrorMessage={isServerErrorMessage}
                 emailPattern={emailPattern}
                 inputValidationMessageDefault={inputValidationMessageDefault}

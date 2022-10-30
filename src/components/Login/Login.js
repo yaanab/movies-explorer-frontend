@@ -4,7 +4,7 @@ import { useFormWithValidation } from '../../hooks/useForm';
 function Login({ 
   onLogin,
   isSendingUserDataToServer,
-  isServerError,
+  isServerErrorLogin,
   isServerErrorMessage,
   emailPattern,
   inputValidationMessageDefault,
@@ -27,7 +27,7 @@ function Login({
         buttonDefault="Войти"
         buttonConnectionToServer="Выполняется вход..."
         isSendingUserDataToServer={isSendingUserDataToServer}
-        isServerError={isServerError}
+        isServerError={isServerErrorLogin}
         serverErrorMessage={isServerErrorMessage}
         text="Ещё не зарегистрированы?"
         link="/signup"
