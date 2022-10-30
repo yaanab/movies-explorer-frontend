@@ -106,6 +106,22 @@
   display: block;
 }
 
+.profile__message-success {
+  display: none;
+  margin: 0;
+  padding: 20px;
+  text-align: center;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 15px;
+  line-height: 20px;
+  color: #3456F3;
+}
+
+.profile__message-success_block {
+  display: block;
+}
+
 .profile__buttons-area {
   display: flex;
   flex-direction: column;

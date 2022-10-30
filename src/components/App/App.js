@@ -60,6 +60,7 @@ function App() {
   const [isServerErrorLogin, setIsServerErrorLogin] = useState(false);
   const [isServerErrorProfile, setIsServerErrorProfile] = useState(false);
   const [isEditProfile, setIsEditProfile] = useState(false);
+  const [isProfileUpdateMessageSuccess, setIsProfileUpdateMessageSuccess] = useState(false);
 
   const emailPattern = "([A-z0-9_.-]{1,})@([A-z0-9_.-]{1,}).([A-z]{2,8})";
   const namePattern = "^[A-Za-zА-Яа-яё -]+$";
@@ -200,6 +201,8 @@ function App() {
         setCurrentUser(user);
         setIsServerErrorProfile(false);
         setIsEditProfile(false);
+        setIsProfileUpdateMessageSuccess(true);
+        setTimeout(() => setIsProfileUpdateMessageSuccess(false), 3000);
       })
       .catch((err) => {
         console.log(err)
@@ -287,6 +290,7 @@ function App() {
                 inputValidationMessageName={inputValidationMessageName}
                 inputValidationMessageEmail={inputValidationMessageEmail}
                 onLogOut={onLogOut}
+                isProfileUpdateMessageSuccess={isProfileUpdateMessageSuccess}
               />
             </Route>
             <Route path="/signup">

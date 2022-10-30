@@ -14,7 +14,8 @@ function Profile({
   inputValidationMessageDefault,
   inputValidationMessageName,
   inputValidationMessageEmail,
-  onLogOut
+  onLogOut,
+  isProfileUpdateMessageSuccess
 }) {
 
   const currentUser = useContext(CurrentUserContext);
@@ -40,7 +41,6 @@ function Profile({
           <div className="profile__input-group profile__input-group_underlined">
             <label className="profile__label" htmlFor="name">Имя</label>
             <input onChange={handleChange} className="profile__input" type="text" pattern={namePattern} id="name" name="name" placeholder="Имя" value={values.name || ""} required readOnly={!isEditProfile}  minLength="2" maxLength="30" autoComplete="on" />
-            
           </div>
           <div className="profile__input-group">
             <label className="profile__label" htmlFor="email">E-mail</label>
@@ -51,6 +51,9 @@ function Profile({
           </span>
           <span className={`profile__error ${(!isValid) && "profile__error_block"}`}>
             {errors.email === inputValidationMessageDefault ? inputValidationMessageEmail : errors.email}
+          </span>
+          <span className={`profile__message-success ${(isProfileUpdateMessageSuccess) && "profile__message-success_block"}`}>
+            Данные пользователя успешно обновлены!
           </span>
         </div>
         {!isEditProfile && (
