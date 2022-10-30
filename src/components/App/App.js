@@ -81,7 +81,7 @@ function App() {
           if (res) {
             setCurrentUser(res);
             setIsLoggedIn(true);
-            // history.push('/');
+            history.push('/');
           }
         })
         .catch((err) => console.log(err));
@@ -176,6 +176,16 @@ function App() {
         setisSendingUserDataToServer(false);
         setTimeout(() => setIsServerErrorLogin(false), 2000);
       });
+  }
+
+  function onLogOut() {
+    mainApi.logOut()
+      .then(() => {
+        setIsLoggedIn(false);
+        localStorage.removeItem('jwt');
+        history.push('/signin');
+      })
+      .catch((err) => console.log(err));
   }
 
   function onSetIsEditUserProfile() {
@@ -276,6 +286,7 @@ function App() {
                 inputValidationMessageDefault={inputValidationMessageDefault}
                 inputValidationMessageName={inputValidationMessageName}
                 inputValidationMessageEmail={inputValidationMessageEmail}
+                onLogOut={onLogOut}
               />
             </Route>
             <Route path="/signup">

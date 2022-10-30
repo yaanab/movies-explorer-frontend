@@ -13,7 +13,8 @@ function Profile({
   serverErrorMessage,
   inputValidationMessageDefault,
   inputValidationMessageName,
-  inputValidationMessageEmail
+  inputValidationMessageEmail,
+  onLogOut
 }) {
 
   const currentUser = useContext(CurrentUserContext);
@@ -57,7 +58,7 @@ function Profile({
             <button type="button" onClick={handleEditProfile} className="profile__button profile__button_type_edit">
               Редактировать
             </button>
-            <button type="button" className="profile__button profile__button_type_logout">
+            <button type="button" onClick={onLogOut} className="profile__button profile__button_type_logout">
               Выйти из аккаунта
             </button>
           </div>
