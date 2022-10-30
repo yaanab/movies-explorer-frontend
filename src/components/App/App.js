@@ -193,7 +193,7 @@ function App() {
       .then(() => {
         setIsLoggedIn(false);
         localStorage.removeItem('jwt');
-        history.push('/signin');
+        history.push('/');
       })
       .catch((err) => console.log(err));
   }
