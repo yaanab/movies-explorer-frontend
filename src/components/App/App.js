@@ -143,6 +143,7 @@ function App() {
       })
       .finally(() => {
         setisSendingUserDataToServer(false);
+        setTimeout(() => setIsServerErrorRegister(false), 2000);
       });;
   }
 
@@ -173,6 +174,7 @@ function App() {
       })
       .finally(() => {
         setisSendingUserDataToServer(false);
+        setTimeout(() => setIsServerErrorLogin(false), 2000);
       });
   }
 
@@ -200,8 +202,10 @@ function App() {
         }
         setIsServerErrorProfile(true);
       })
-      .finally(() =>
-        setisSendingUserDataToServer(false));
+      .finally(() => {
+        setisSendingUserDataToServer(false);
+        setTimeout(() => setIsServerErrorProfile(false), 2000);
+      });
   }
 
   return (
