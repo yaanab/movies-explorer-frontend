@@ -21,33 +21,6 @@ import movieImg2 from "../../images/movie-img-2.png";
 
 function App() {
 
-  const cards = [
-    {
-      'nameRU': '33 слова о дизайне',
-      'duration': '1ч 47м',
-      'image': movieImg2,
-      'movieId': '1265458'
-    },
-    {
-      'nameRU': '33 слова о дизайне',
-      'duration': '1ч 47м',
-      'image': movieImg1,
-      'movieId': '1265488'
-    },
-    {
-      'nameRU': '33 слова о дизайне',
-      'duration': '1ч 47м',
-      'image': movieImg2,
-      'movieId': '1265555'
-    },
-    {
-      'nameRU': '33 слова о дизайне',
-      'duration': '1ч 47м',
-      'image': movieImg1,
-      'movieId': '1233333'
-    },
-  ]
-
   const {
     emailPattern,
     namePattern,
@@ -75,6 +48,7 @@ function App() {
   const [isServerErrorProfile, setIsServerErrorProfile] = useState(false);
   const [isEditProfile, setIsEditProfile] = useState(false);
   const [isProfileUpdateMessageSuccess, setIsProfileUpdateMessageSuccess] = useState(false);
+  const [cards, setCards] = useState([]);
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
@@ -91,15 +65,23 @@ function App() {
     }
   }, [isLoggedIn]);
 
+  // useEffect(() => {
+  //   if (isLoggedIn) {
+  //     mainApi.getUserInfo()
+  //       .then((user) => {
+  //         setCurrentUser(user);
+  //       })
+  //       .catch((err) => console.log(err));
+  //   }
+  // }, [isLoggedIn]);
+
   useEffect(() => {
-    if (isLoggedIn) {
-      mainApi.getUserInfo()
-        .then((user) => {
-          setCurrentUser(user);
-        })
-        .catch((err) => console.log(err));
-    }
-  }, [isLoggedIn]);
+    moviesApi.getMovies()
+    .then((cards) => {
+      setCards(cards);
+    })
+    .catch((err) => console.log(err));
+  }, []);
 
   function handleNavMenuClick() {
     setIsNavPopupOpen(true);

@@ -15,7 +15,7 @@ function Login({
 
   function handleSubmit(e) {
     e.preventDefault();
-    onLogin(values.email, values.password)
+    onLogin(values.email, values.password);
   }
 
   return (

@@ -1,4 +1,4 @@
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'https://api.nomoreparties.co/beatfilm-movies';
 
 const headers = {
   'Content-Type': 'application/json'
