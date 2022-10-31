@@ -49,6 +49,12 @@ function App() {
   const [isEditProfile, setIsEditProfile] = useState(false);
   const [isProfileUpdateMessageSuccess, setIsProfileUpdateMessageSuccess] = useState(false);
   const [cards, setCards] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [searchWord, setSearchWord] = useState("");
+  const [foundedMovies, setFoundedMovies] = useState([]);
+  const [filteredMovies, setFilteredMovies] = useState([]);
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
@@ -77,10 +83,10 @@ function App() {
 
   useEffect(() => {
     moviesApi.getMovies()
-    .then((cards) => {
-      setCards(cards);
-    })
-    .catch((err) => console.log(err));
+      .then((cards) => {
+        setCards(cards);
+      })
+      .catch((err) => console.log(err));
   }, []);
 
   function handleNavMenuClick() {
@@ -213,6 +219,32 @@ function App() {
       });
   }
 
+  function handleCheckBoxCheck(evt) {
+    setIsCheckboxChecked(evt.target.checked);
+  }
+
+  function filterMoviesByCheckbox(movies) {
+    const filteredMovies = movies.filter((movie) => movie.duration <= 40);
+    setFilteredMovies(filteredMovies);
+    localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
+  }
+
+  function handleSearchMovies(searchWord) {
+    setIsLoading(true);
+    setSearchWord(searchWord);
+    localStorage.setItem("searchWord", JSON.stringify(searchWord));
+
+    const foundedMovies = cards.filter((card) => card.nameRu.toLowerCase().includes(searchWord.roLowerCase()));
+    setFoundedMovies(foundedMovies);
+    localStorage.setItem("foundedMovies", JSON.stringify(foundedMovies));
+
+    if (isCheckboxChecked) {
+      filterMoviesByCheckbox(foundedMovies);
+    }
+
+    localStorage.setItem("isCheckboxChecked", JSON.stringify(isCheckboxChecked));
+  }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="app_content">
@@ -245,6 +277,10 @@ function App() {
                       onNavPopupClose={handleNavPopupClose}
                     />
                     <Movies
+                      isLoading={isLoading}
+                      onSearchMovies={handleSearchMovies}
+                      onCheckboxCheck={handleCheckBoxCheck}
+                      isCheckboxChecked={isCheckboxChecked}
                       cards={cards}
                       isSendingUserDataToServer={isSendingUserDataToServer}
                       isButtonClicked={isButtonClicked}

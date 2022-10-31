@@ -2,10 +2,13 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Preloader from "../PreLoader/Preloader";
 
-function Movies({ cards, isLoading, isButtonClicked, isFilmSaved }) {
+function Movies({ isLoading, onSearchMovies, isCheckboxChecked, cards, isButtonClicked, isFilmSaved }) {
   return (
     <main className="movies__content">
-      <SearchForm />
+      <SearchForm 
+      onSearchMovies={onSearchMovies}
+      isCheckboxChecked={isCheckboxChecked}
+      />
       {!isLoading &&
         <MoviesCardList
           cards={cards}

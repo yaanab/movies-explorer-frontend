@@ -2,18 +2,18 @@ import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 import { useFormWithValidation } from '../../hooks/useForm';
 import findButton from '../../images/find-button.svg';
 
-function SearchForm() {
+function SearchForm({ onSearchMovies, onCheckboxCheck, isCheckboxChecked }) {
 
-  const { values, handleChange, errors, isValid } = useFormWithValidation({});
+  const { values, handleChange } = useFormWithValidation({});
 
-  function handleSubmit(e) {
+  function onSubmit(e) {
     e.preventDefault();
-    // onLogin(values.email, values.password);
+    onSearchMovies(values.nameRU);
   }
 
   return (
     <section className="search__content">
-      <form onSubmit={handleSubmit} className="search__form">
+      <form onSubmit={onSubmit} className="search__form">
         <div className="search__input-area">
           <input type="text" onChange={handleChange} value={values.nameRU || ""} className="search__form-input" placeholder="Фильм" name="nameRU" minLength="1" required />
           <button type="submit" className="search__form-button">
@@ -23,6 +23,8 @@ function SearchForm() {
         <div className="search__filter-area">
           <FilterCheckbox
             label="Короткометражки"
+            onCheckboxCheck={onCheckboxCheck}
+            isCheckboxChecked={isCheckboxChecked}
           />
         </div>
       </form >
