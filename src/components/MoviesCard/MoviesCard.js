@@ -11,7 +11,7 @@ function MoviesCard({ card, isButtonClicked, isFilmSaved }) {
       <div className="movies-card__info">
         <div className="movies-card__descriprion">
           <h2 className="movies-card__title">{card.nameRU}</h2>
-          <p className="movies-card__duration">{card.duration}</p>
+          <p className="movies-card__duration">{`${Math.floor(card.duration / 60)}ч ${card.duration % 60}м`}</p>
         </div>
         {!isFilmSaved &&
           <button aria-label="Сохранить фильм" type="button" className="movies-card__button">
@@ -24,7 +24,9 @@ function MoviesCard({ card, isButtonClicked, isFilmSaved }) {
           </button>
         }
       </div>
-      <img className="movies-card__image" src={card.image} alt={card.nameRU} />
+      <a href={card.trailerLink} target="_blank" rel="noreferrer" className="movies-card__trailer">
+        <img className="movies-card__image" src={`https://api.nomoreparties.co${card.image.url}`} alt={card.nameRU} />
+      </a>
     </article>
   );
 }

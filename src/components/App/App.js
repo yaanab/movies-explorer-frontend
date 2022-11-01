@@ -85,6 +85,7 @@ function App() {
     moviesApi.getMovies()
       .then((cards) => {
         setCards(cards);
+        console.log(cards)
       })
       .catch((err) => console.log(err));
   }, []);

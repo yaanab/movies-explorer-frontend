@@ -65,6 +65,10 @@
   border-radius: 2px;
 }
 
+.movies-card__trailer {
+  text-decoration: none;
+}
+
 .movies-card__image {
   width: 100%;
   object-fit: cover;
