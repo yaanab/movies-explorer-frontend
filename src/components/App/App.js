@@ -14,7 +14,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { useFormWithValidation } from '../../hooks/useForm';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import * as mainApi from '../../utils/MainApi';
-import * as moviesApi from '../../utils/MoviesApi';
+// import * as moviesApi from '../../utils/MoviesApi';
 
 import movieImg1 from "../../images/movie-img-1.png";
 import movieImg2 from "../../images/movie-img-2.png";
@@ -48,12 +48,14 @@ function App() {
   const [isServerErrorProfile, setIsServerErrorProfile] = useState(false);
   const [isEditProfile, setIsEditProfile] = useState(false);
   const [isProfileUpdateMessageSuccess, setIsProfileUpdateMessageSuccess] = useState(false);
-  const [cards, setCards] = useState([]);
+  // const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [searchWord, setSearchWord] = useState("");
-  const [foundedMovies, setFoundedMovies] = useState([]);
-  const [filteredMovies, setFilteredMovies] = useState([]);
-  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+  const [foundedMovies, setFoundedMovies] = useState([]); // submit по слову
+  const [filteredMovies, setFilteredMovies] = useState([]); // слова после фильтра
+  const [savedMovies, setSavedMovies] = useState([]); // сохраненные фильмы
+  const [isMovieSaved, setMovieSaved] = useState(false); // проверка фильма на сохранение
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false); // чекбокс состояние
 
 
   useEffect(() => {
@@ -81,14 +83,14 @@ function App() {
   //   }
   // }, [isLoggedIn]);
 
-  useEffect(() => {
-    moviesApi.getMovies()
-      .then((cards) => {
-        setCards(cards);
-        console.log(cards)
-      })
-      .catch((err) => console.log(err));
-  }, []);
+  // useEffect(() => {
+  //   moviesApi.getMovies()
+  //     .then((cards) => {
+  //       setCards(cards);
+  //       console.log(cards)
+  //     })
+  //     .catch((err) => console.log(err));
+  // }, []);
 
   function handleNavMenuClick() {
     setIsNavPopupOpen(true);
@@ -230,20 +232,41 @@ function App() {
     localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
   }
 
-  function handleSearchMovies(searchWord) {
-    setIsLoading(true);
-    setSearchWord(searchWord);
-    localStorage.setItem("searchWord", JSON.stringify(searchWord));
+  // function handleSearchMovies(searchWord) {
+  //   setIsLoading(true);
+  //   setSearchWord(searchWord);
+  //   localStorage.setItem("searchWord", JSON.stringify(searchWord));
 
-    const foundedMovies = cards.filter((card) => card.nameRu.toLowerCase().includes(searchWord.roLowerCase()));
-    setFoundedMovies(foundedMovies);
-    localStorage.setItem("foundedMovies", JSON.stringify(foundedMovies));
+  //   const foundedMovies = cards.filter((card) => card.nameRU.toLowerCase().includes(searchWord.toLowerCase()));
+  //   setFoundedMovies(foundedMovies);
+  //   localStorage.setItem("foundedMovies", JSON.stringify(foundedMovies));
 
-    if (isCheckboxChecked) {
-      filterMoviesByCheckbox(foundedMovies);
+  //   if (isCheckboxChecked) {
+  //     filterMoviesByCheckbox(foundedMovies);
+  //   }
+
+  //   localStorage.setItem("isCheckboxChecked", JSON.stringify(isCheckboxChecked));
+  //   setIsLoading(false);
+  // }
+
+  function handleMovieSave(card) {
+    const isSaved = savedMovies.find((movie) => movie.id === card.id);
+    if (!isSaved) {
+      mainApi
+        .saveMovie(
+          card.country,
+          card.director,
+          card.duration,
+          card.year,
+          card.description,
+          card.image,
+          card.trailerLink,
+          card.thumbnail,
+          card.movieId,
+          card.nameRU,
+          card.nameEN
+        )
     }
-
-    localStorage.setItem("isCheckboxChecked", JSON.stringify(isCheckboxChecked));
   }
 
   return (
@@ -279,13 +302,14 @@ function App() {
                     />
                     <Movies
                       isLoading={isLoading}
-                      onSearchMovies={handleSearchMovies}
+                      // onSearchMovies={handleSearchMovies}
                       onCheckboxCheck={handleCheckBoxCheck}
                       isCheckboxChecked={isCheckboxChecked}
-                      cards={cards}
+                      cards={foundedMovies}
                       isSendingUserDataToServer={isSendingUserDataToServer}
-                      isButtonClicked={isButtonClicked}
-                      isFilmSaved={false}
+                      onMovieSave={handleMovieSave}
+                      isMovieFounded={true}
+                      isMovieSaved={isMovieSaved}
                     />
                     <Footer />
                   </>
@@ -306,7 +330,7 @@ function App() {
                       onNavPopupClose={handleNavPopupClose}
                     />
                     <SavedMovies
-                      cards={cards}
+                      // cards={cards}
                       isFilmSaved={true}
                     />
                     <Footer />

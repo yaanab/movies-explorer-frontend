@@ -7,7 +7,8 @@ function SavedMovies({ cards, isFilmSaved }) {
       <SearchForm />
       <MoviesCardList
         cards={cards}
-        isFilmSaved={isFilmSaved}
+        isMovieFounded={false}
+        // isFilmSaved={isFilmSaved}
       />
     </main>
   );

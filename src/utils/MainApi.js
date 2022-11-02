@@ -73,3 +73,37 @@ export const editProfile = (name, email) => {
   })
     .then(res => testResponse(res));
 }
+
+export const saveMovie = (
+  country,
+  director,
+  duration,
+  year,
+  description,
+  image,
+  trailerLink,
+  thumbnail,
+  movieId,
+  nameRU,
+  nameEN
+) => {
+  return fetch(`${BASE_URL}/movies`, {
+    credentials: 'include',
+    method: 'PATCH',
+    headers: headers,
+    body: JSON.stringify({
+      country,
+      director,
+      duration,
+      year,
+      description,
+      image,
+      trailerLink,
+      thumbnail,
+      movieId,
+      nameRU,
+      nameEN,
+    })
+  })
+    .then(res => testResponse(res));
+}
