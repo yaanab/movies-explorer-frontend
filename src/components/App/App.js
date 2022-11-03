@@ -14,10 +14,6 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { useFormWithValidation } from '../../hooks/useForm';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import * as mainApi from '../../utils/MainApi';
-// import * as moviesApi from '../../utils/MoviesApi';
-
-import movieImg1 from "../../images/movie-img-1.png";
-import movieImg2 from "../../images/movie-img-2.png";
 
 function App() {
 
@@ -41,22 +37,13 @@ function App() {
   const [currentUser, setCurrentUser] = useState({});
   const [isNavPopupOpen, setIsNavPopupOpen] = useState(false);
   const [isSendingUserDataToServer, setisSendingUserDataToServer] = useState(false);
-  const [isButtonClicked, setIsButtonClicked] = useState(true);
   const [isServerErrorMessage, setIsServerErrorMessage] = useState("");
   const [isServerErrorRegister, setIsServerErrorRegister] = useState(false);
   const [isServerErrorLogin, setIsServerErrorLogin] = useState(false);
   const [isServerErrorProfile, setIsServerErrorProfile] = useState(false);
   const [isEditProfile, setIsEditProfile] = useState(false);
   const [isProfileUpdateMessageSuccess, setIsProfileUpdateMessageSuccess] = useState(false);
-  // const [cards, setCards] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
-  // const [searchWord, setSearchWord] = useState("");
-  // const [foundedMovies, setFoundedMovies] = useState([]); // submit по слову
-  const [filteredMovies, setFilteredMovies] = useState([]); // слова после фильтра
-  const [savedMovies, setSavedMovies] = useState([]); // сохраненные фильмы
-  const [isMovieSaved, setMovieSaved] = useState(false); // проверка фильма на сохранение
-  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false); // чекбокс состояние
-
+  const [savedMovies, setSavedMovies] = useState([]);
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
@@ -73,24 +60,15 @@ function App() {
     }
   }, [isLoggedIn]);
 
-  // useEffect(() => {
-  //   if (isLoggedIn) {
-  //     mainApi.getUserInfo()
-  //       .then((user) => {
-  //         setCurrentUser(user);
-  //       })
-  //       .catch((err) => console.log(err));
-  //   }
-  // }, [isLoggedIn]);
-
-  // useEffect(() => {
-  //   moviesApi.getMovies()
-  //     .then((cards) => {
-  //       setCards(cards);
-  //       console.log(cards)
-  //     })
-  //     .catch((err) => console.log(err));
-  // }, []);
+  useEffect(() => {
+    mainApi.getSavedMovies()
+      .then((res) => {
+        if (res) {
+          setSavedMovies(res);
+        }
+      })
+      .catch((err) => console.log(err));
+  }, []);
 
   function handleNavMenuClick() {
     setIsNavPopupOpen(true);
@@ -222,53 +200,6 @@ function App() {
       });
   }
 
-  function handleCheckBoxCheck(evt) {
-    setIsCheckboxChecked(evt.target.checked);
-  }
-
-  function filterMoviesByCheckbox(movies) {
-    const filteredMovies = movies.filter((movie) => movie.duration <= 40);
-    setFilteredMovies(filteredMovies);
-    localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
-  }
-
-  // function handleSearchMovies(searchWord) {
-  //   setIsLoading(true);
-  //   setSearchWord(searchWord);
-  //   localStorage.setItem("searchWord", JSON.stringify(searchWord));
-
-  //   const foundedMovies = cards.filter((card) => card.nameRU.toLowerCase().includes(searchWord.toLowerCase()));
-  //   setFoundedMovies(foundedMovies);
-  //   localStorage.setItem("foundedMovies", JSON.stringify(foundedMovies));
-
-  //   if (isCheckboxChecked) {
-  //     filterMoviesByCheckbox(foundedMovies);
-  //   }
-
-  //   localStorage.setItem("isCheckboxChecked", JSON.stringify(isCheckboxChecked));
-  //   setIsLoading(false);
-  // }
-
-  function handleMovieSave(card) {
-    const isSaved = savedMovies.find((movie) => movie.id === card.id);
-    if (!isSaved) {
-      mainApi
-        .saveMovie(
-          card.country,
-          card.director,
-          card.duration,
-          card.year,
-          card.description,
-          card.image,
-          card.trailerLink,
-          card.thumbnail,
-          card.movieId,
-          card.nameRU,
-          card.nameEN
-        )
-    }
-  }
-
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="app_content">
@@ -301,15 +232,7 @@ function App() {
                       onNavPopupClose={handleNavPopupClose}
                     />
                     <Movies
-                      isLoading={isLoading}
-                      // onSearchMovies={handleSearchMovies}
-                      onCheckboxCheck={handleCheckBoxCheck}
-                      isCheckboxChecked={isCheckboxChecked}
-                      // cards={foundedMovies}
-                      isSendingUserDataToServer={isSendingUserDataToServer}
-                      onMovieSave={handleMovieSave}
-                      isMovieFounded={true}
-                      isMovieSaved={isMovieSaved}
+                      savedMovies={savedMovies}
                     />
                     <Footer />
                   </>

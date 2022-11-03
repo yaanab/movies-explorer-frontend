@@ -1,11 +1,15 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useContext } from 'react';
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Preloader from "../PreLoader/Preloader";
 import * as moviesApi from '../../utils/MoviesApi';
-import MoviesCard from '../MoviesCard/MoviesCard';
+import * as mainApi from '../../utils/MainApi';
 
-function Movies({ }) {
+import MoviesCard from '../MoviesCard/MoviesCard';
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
+
+function Movies({ savedMovies }) {
+  const currentUser = useContext(CurrentUserContext);
 
   const isCardInLocalStorage = localStorage.getItem("cards");
   const isSearchWordInLocalStorage = localStorage.getItem("searchWord");
@@ -35,8 +39,6 @@ function Movies({ }) {
         });
     }
   }, []);
-
-  // console.log(error);
 
   useEffect(() => {
     if (isCheckboxChecked) {
@@ -81,6 +83,26 @@ function Movies({ }) {
     } else {
       setIsCheckboxChecked(true);
       localStorage.setItem("isCheckboxChecked", JSON.stringify(true));
+    }
+  }
+
+  function handleMovieSave(card) {
+    const isSaved = savedMovies.find((movie) => movie.id === card.id);
+    if (!isSaved) {
+      mainApi
+        .saveMovie(
+          card.country,
+          card.director,
+          card.duration,
+          card.year,
+          card.description,
+          card.image,
+          card.trailerLink,
+          card.thumbnail,
+          card.movieId,
+          card.nameRU,
+          card.nameEN
+        )
     }
   }
 

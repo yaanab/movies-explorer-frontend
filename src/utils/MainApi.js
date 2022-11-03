@@ -74,6 +74,15 @@ export const editProfile = (name, email) => {
     .then(res => testResponse(res));
 }
 
+export const getSavedMovies = () => {
+  return fetch(`${BASE_URL}/movies`, {
+    credentials: 'include',
+    headers: headers,
+  })
+  .then(res => testResponse(res));
+}
+
+
 export const saveMovie = (
   country,
   director,
@@ -107,3 +116,14 @@ export const saveMovie = (
   })
     .then(res => testResponse(res));
 }
+
+export const deleteMovie = (cardId) => {
+  return fetch(`${BASE_URL}/movies/${cardId}`, {
+    credentials: 'include',
+    method: 'DELETE',
+    headers: headers,
+  })
+  .then(res => testResponse(res));
+}
+
+
