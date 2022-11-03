@@ -1,14 +1,27 @@
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList({ cards, onMovieSave, isButtonClicked, isFilmSaved }) {
+function MoviesCardList({ cards, onMovieSave, isButtonClicked, isMovieJS, isMovieSaved, isError }) {
+
+
   return (
     <section className="movies">
-      <div className="movies__cards">
-        {cards.map((card) => (
-          <MoviesCard key={card.id} card={card} onMovieSave={onMovieSave} isFilmSaved={isFilmSaved} isButtonClicked={isButtonClicked} />
-        ))}
-      </div>
-      <button type="button" className="movies__button-show-more">Ещё</button>
+      {cards.length > 0 && !isError &&
+        <>
+          <div className="movies__cards">
+            {cards.map((card) => (
+              <MoviesCard key={card.id} card={card} isMovieJS={isMovieJS} onMovieSave={onMovieSave} isMovieSaved={isMovieSaved} isButtonClicked={isButtonClicked} />
+            ))}
+          </div>
+          <button type="button" className="movies__button-show-more">Ещё</button>
+        </>
+      }
+      {cards.length < 1 && !isError &&
+        <p className="movies__not-found">Ничего не найдено</p>
+      }
+      {isError &&
+        <p className="movies__not-found">Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз.</p>
+      }
+
     </section>
   );
 }

@@ -50,8 +50,8 @@ function App() {
   const [isProfileUpdateMessageSuccess, setIsProfileUpdateMessageSuccess] = useState(false);
   // const [cards, setCards] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [searchWord, setSearchWord] = useState("");
-  const [foundedMovies, setFoundedMovies] = useState([]); // submit по слову
+  // const [searchWord, setSearchWord] = useState("");
+  // const [foundedMovies, setFoundedMovies] = useState([]); // submit по слову
   const [filteredMovies, setFilteredMovies] = useState([]); // слова после фильтра
   const [savedMovies, setSavedMovies] = useState([]); // сохраненные фильмы
   const [isMovieSaved, setMovieSaved] = useState(false); // проверка фильма на сохранение
@@ -305,7 +305,7 @@ function App() {
                       // onSearchMovies={handleSearchMovies}
                       onCheckboxCheck={handleCheckBoxCheck}
                       isCheckboxChecked={isCheckboxChecked}
-                      cards={foundedMovies}
+                      // cards={foundedMovies}
                       isSendingUserDataToServer={isSendingUserDataToServer}
                       onMovieSave={handleMovieSave}
                       isMovieFounded={true}

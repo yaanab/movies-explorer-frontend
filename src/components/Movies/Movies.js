@@ -3,54 +3,102 @@ import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Preloader from "../PreLoader/Preloader";
 import * as moviesApi from '../../utils/MoviesApi';
+import MoviesCard from '../MoviesCard/MoviesCard';
 
 function Movies({ }) {
-  const isSearchWordInLocalStorage = JSON.parse(localStorage.getItem("searchWord"));
-  const isFoundedMoviesInLocalStorage = JSON.parse(localStorage.getItem("foundedMovies"));
-  const isFilteredMoviesInLocalStorage = JSON.parse(localStorage.getItem("filteredMovies"));
-  const isCheckboxCheckedInLocalStorage = JSON.parse(localStorage.getItem("isCheckboxChecked"));
 
-  const [cards, setCards] = useState([]);
+  const isCardInLocalStorage = localStorage.getItem("cards");
+  const isSearchWordInLocalStorage = localStorage.getItem("searchWord");
+  const isCheckboxCheckedInLocalStorage = localStorage.getItem("isCheckboxChecked");
+  const isFoundedMoviesInLocalStorage = localStorage.getItem("foundedMovies");
+  const isFilteredMoviesInLocalStorage = localStorage.getItem("filteredMovies");
+
   const [isLoading, setIsLoading] = useState(false);
-  const [searchWord, setSearchWord] = useState("");
-  const [foundedMovies, setFoundedMovies] = useState([]); // submit по слову
-  const [filteredMovies, setFilteredMovies] = useState([]); // слова после фильтра
-  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false); // чекбокс состояние
-  const [renderedCards, setIsRenderedCards] = useState([]); // отрисованные карточки
+  const [cards, setCards] = useState(isCardInLocalStorage ? JSON.parse(isCardInLocalStorage) : []);
+  const [searchWord, setSearchWord] = useState(isSearchWordInLocalStorage ? JSON.parse(isSearchWordInLocalStorage) : "");
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(isCheckboxCheckedInLocalStorage ? JSON.parse(isCheckboxCheckedInLocalStorage) : false);
+  const [foundedMovies, setFoundedMovies] = useState(isFoundedMoviesInLocalStorage ? JSON.parse(isFoundedMoviesInLocalStorage) : []);
+  const [filteredMovies, setFilteredMovies] = useState(isFilteredMoviesInLocalStorage ? JSON.parse(isFilteredMoviesInLocalStorage) : []);
+  const [renderedCards, setRenderedCards] = useState([]);
+  const [isError, setIsError] = useState(false);
 
   useEffect(() => {
-    moviesApi.getMovies()
-      .then((cards) => {
-        setCards(cards);
-        console.log(cards)
-      })
-      .catch((err) => console.log(err));
+    if (cards.length < 1) {
+      moviesApi.getMovies()
+        .then((cards) => {
+          setCards(cards);
+          localStorage.setItem("cards", JSON.stringify(cards));
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsError(true);
+        });
+    }
   }, []);
 
-  function foundCards (word) {
-    cards.filter((card) => card.nameRU.toLowerCase().includes(word.toLowerCase()));
-  }
+  // console.log(error);
 
-function searchMovie (word) {
-  setIsLoading(true);
-  if (!searchWord === word) {
+  useEffect(() => {
+    if (isCheckboxChecked) {
+      const filteredMovies = foundedMovies.filter((movie) => movie.duration <= 40);
+      setRenderedCards(filteredMovies);
+
+    } else {
+      setRenderedCards(foundedMovies);
+    }
+  }, [isCheckboxChecked])
+
+  function searchMovies(word) {
+    setIsLoading(true);
+
     localStorage.removeItem("searchWord");
     localStorage.removeItem("foundedMovies");
     localStorage.removeItem("filteredMovies");
 
-  }
-}
+    setSearchWord(word);
+    const foundedMovies = cards.filter((movie) => movie.nameRU.toLowerCase().includes(word.toLowerCase()));
+    setFoundedMovies(foundedMovies);
 
+    localStorage.setItem("searchWord", JSON.stringify(word));
+    localStorage.setItem("foundedMovies", JSON.stringify(foundedMovies));
+
+    if (isCheckboxChecked) {
+      const filteredMovies = foundedMovies.filter((movie) => movie.duration <= 40);
+      setRenderedCards(filteredMovies);
+      localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
+      setIsLoading(false);
+    } else {
+      localStorage.setItem("isCheckboxChecked", JSON.stringify(false));
+      setRenderedCards(foundedMovies);
+      setIsLoading(false);
+    }
+  }
+
+  function checkboxCheck() {
+    if (isCheckboxChecked) {
+      setIsCheckboxChecked(false);
+      localStorage.setItem("isCheckboxChecked", JSON.stringify(false));
+    } else {
+      setIsCheckboxChecked(true);
+      localStorage.setItem("isCheckboxChecked", JSON.stringify(true));
+    }
+  }
 
   return (
     <main className="movies__content">
       <SearchForm
         isCheckboxChecked={isCheckboxChecked}
+        onSearchMovies={searchMovies}
+        onCheckboxCheck={checkboxCheck}
+        searchWord={searchWord}
       />
       {!isLoading &&
         <MoviesCardList
           cards={renderedCards}
           isLoading={isLoading}
+          isMovieJS={true}
+          isError={isError}
+        // isMovieSaved={false}
         />
       }
       {isLoading &&

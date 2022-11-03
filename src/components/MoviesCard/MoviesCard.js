@@ -2,7 +2,7 @@ import saveButtonInactive from "../../images/save-btn.svg";
 import saveButtonActive from "../../images/save-btn-active.svg";
 import deleteButton from "../../images/film-delete-btn.svg";
 
-function MoviesCard({ card, onMovieSave, isMovieFounded, isMovieSaved }) {
+function MoviesCard({ card, onSearchMovie, isMovieJS, isMovieSaved }) {
 
   const buttonImage = (isMovieSaved ? saveButtonActive : saveButtonInactive);
 
@@ -17,12 +17,12 @@ function MoviesCard({ card, onMovieSave, isMovieFounded, isMovieSaved }) {
           <h2 className="movies-card__title">{card.nameRU}</h2>
           <p className="movies-card__duration">{`${Math.floor(card.duration / 60)}ч ${card.duration % 60}м`}</p>
         </div>
-        {isMovieFounded &&
+        {isMovieJS &&
           <button aria-label="Сохранить фильм" type="button" className="movies-card__button">
             <img className="movies-card__button-img" src={buttonImage} alt="Cохранить фильм" />
           </button>
         }
-        {!isMovieFounded &&
+        {!isMovieJS &&
           <button aria-label="Сохранить фильм" type="button" className="movies-card__button">
             <img className="movies-card__button-img" src={deleteButton} alt="Удалить  фильм" />
           </button>

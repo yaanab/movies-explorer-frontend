@@ -1,10 +1,17 @@
+import React, { useEffect } from 'react';
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 import { useFormWithValidation } from '../../hooks/useForm';
 import findButton from '../../images/find-button.svg';
 
-function SearchForm({ onSearchMovies, onCheckboxCheck, isCheckboxChecked }) {
+function SearchForm({ onSearchMovies, onCheckboxCheck, isCheckboxChecked, searchWord }) {
 
-  const { values, handleChange } = useFormWithValidation({});
+  const { values, setValues, handleChange } = useFormWithValidation({});
+
+  useEffect(() => {
+    setValues({
+      nameRU: searchWord
+    })
+  }, [searchWord]);
 
   function onSubmit(e) {
     e.preventDefault();
