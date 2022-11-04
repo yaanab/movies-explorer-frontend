@@ -79,11 +79,11 @@ export const getSavedMovies = () => {
     credentials: 'include',
     headers: headers,
   })
-  .then(res => testResponse(res));
+    .then(res => testResponse(res));
 }
 
 
-export const saveMovie = (
+export const saveMovie = ({
   country,
   director,
   duration,
@@ -95,10 +95,10 @@ export const saveMovie = (
   movieId,
   nameRU,
   nameEN
-) => {
+}) => {
   return fetch(`${BASE_URL}/movies`, {
     credentials: 'include',
-    method: 'PATCH',
+    method: 'POST',
     headers: headers,
     body: JSON.stringify({
       country,
@@ -111,19 +111,19 @@ export const saveMovie = (
       thumbnail,
       movieId,
       nameRU,
-      nameEN,
+      nameEN
     })
   })
     .then(res => testResponse(res));
 }
 
-export const deleteMovie = (cardId) => {
-  return fetch(`${BASE_URL}/movies/${cardId}`, {
+export const deleteMovie = (movieId) => {
+  return fetch(`${BASE_URL}/movies/${movieId}`, {
     credentials: 'include',
     method: 'DELETE',
     headers: headers,
   })
-  .then(res => testResponse(res));
+    .then(res => testResponse(res));
 }
 
 

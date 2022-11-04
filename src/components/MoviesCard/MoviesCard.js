@@ -1,14 +1,19 @@
+import React from "react";
+import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import saveButtonInactive from "../../images/save-btn.svg";
 import saveButtonActive from "../../images/save-btn-active.svg";
 import deleteButton from "../../images/film-delete-btn.svg";
 
-function MoviesCard({ card, onSearchMovie, isMovieJS, isMovieSaved }) {
+function MoviesCard({ card, onMovieSave, isMovieJS, isMovieSaved }) {
+  const currentUser = React.useContext(CurrentUserContext);
 
-  const buttonImage = (isMovieSaved ? saveButtonActive : saveButtonInactive);
+  const isSaved = card.owner === currentUser._id;
 
-  // function handleMovieSave() {
-  //   onMovieSave(card);
-  // }
+  const buttonImage = (isSaved ? saveButtonActive : saveButtonInactive);
+
+  function handleMovieSave() {
+    onMovieSave(card);
+  }
 
   return (
     <article className="movies-card">
@@ -19,7 +24,7 @@ function MoviesCard({ card, onSearchMovie, isMovieJS, isMovieSaved }) {
         </div>
         {isMovieJS &&
           <button aria-label="Сохранить фильм" type="button" className="movies-card__button">
-            <img className="movies-card__button-img" src={buttonImage} alt="Cохранить фильм" />
+            <img onClick={handleMovieSave} className="movies-card__button-img" src={buttonImage} alt="Cохранить фильм" />
           </button>
         }
         {!isMovieJS &&
@@ -29,7 +34,7 @@ function MoviesCard({ card, onSearchMovie, isMovieJS, isMovieSaved }) {
         }
       </div>
       <a href={card.trailerLink} target="_blank" rel="noreferrer" className="movies-card__trailer">
-        <img className="movies-card__image" src={`https://api.nomoreparties.co${card.image.url}`} alt={card.nameRU} />
+        <img className="movies-card__image" src={card._id ? card.image : `https://api.nomoreparties.co${card.image.url}`} alt={card.nameRU} />
       </a>
     </article>
   );

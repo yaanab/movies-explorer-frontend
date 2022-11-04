@@ -1,15 +1,14 @@
 import MoviesCard from '../MoviesCard/MoviesCard';
 
 function MoviesCardList({ cards, onMovieSave, isButtonClicked, isMovieJS, isMovieSaved, isError }) {
-
-
+console.log(cards)
   return (
     <section className="movies">
       {cards.length > 0 && !isError &&
         <>
           <div className="movies__cards">
             {cards.map((card) => (
-              <MoviesCard key={card.id} card={card} isMovieJS={isMovieJS} onMovieSave={onMovieSave} isMovieSaved={isMovieSaved} isButtonClicked={isButtonClicked} />
+              <MoviesCard key={card.id || card._id} card={card} isMovieJS={isMovieJS} onMovieSave={onMovieSave} isMovieSaved={isMovieSaved} isButtonClicked={isButtonClicked} />
             ))}
           </div>
           <button type="button" className="movies__button-show-more">Ещё</button>

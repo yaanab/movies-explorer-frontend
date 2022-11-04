@@ -68,7 +68,7 @@ function App() {
         }
       })
       .catch((err) => console.log(err));
-  }, []);
+  }, [isLoggedIn]);
 
   function handleNavMenuClick() {
     setIsNavPopupOpen(true);
@@ -200,6 +200,43 @@ function App() {
       });
   }
 
+  function handleMovieSave(card) {
+      const isSaved = savedMovies.find((movie) => movie.movieId === card.movieId);
+      if (!isSaved || savedMovies.length < 1) {
+        console.log("сохраняем")
+        mainApi
+          .saveMovie({
+            country: card.country,
+            director: card.director,
+            duration: card.duration,
+            year: card.year,
+            description: card.description,
+            image: `https://api.nomoreparties.co${card.image.url}`,
+            trailerLink: card.trailerLink,
+            thumbnail: `https://api.nomoreparties.co${card.image.formats.thumbnail.url}`,
+            movieId: card.id,
+            nameRU: card.nameRU,
+            nameEN: card.nameEN
+          })
+          .then((newCard) => {
+            console.log(newCard)
+            setSavedMovies([...savedMovies, newCard]);
+          })
+          .catch((err) => console.log(err));
+        
+      } else {
+        console.log("удаляем")
+        console.log(card)
+      //   mainApi
+      //     .deleteMovie(card._id)
+      //     .then((сard) => {
+      //       console.log(сard);
+      //       setSavedMovies(savedMovies.filter((movie) => movie._id !== card._id));
+      //     })
+      //     .catch((err) => console.log(err));
+      }
+    }
+
   return (
     <CurrentUserContext.Provider value={currentUser}>
       <div className="app_content">
@@ -233,6 +270,7 @@ function App() {
                     />
                     <Movies
                       savedMovies={savedMovies}
+                      handleMovieSave={handleMovieSave}
                     />
                     <Footer />
                   </>

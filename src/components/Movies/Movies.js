@@ -8,7 +8,7 @@ import * as mainApi from '../../utils/MainApi';
 import MoviesCard from '../MoviesCard/MoviesCard';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 
-function Movies({ savedMovies }) {
+function Movies({ handleMovieSave, savedMovies }) {
   const currentUser = useContext(CurrentUserContext);
 
   const isCardInLocalStorage = localStorage.getItem("cards");
@@ -23,6 +23,7 @@ function Movies({ savedMovies }) {
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(isCheckboxCheckedInLocalStorage ? JSON.parse(isCheckboxCheckedInLocalStorage) : false);
   const [foundedMovies, setFoundedMovies] = useState(isFoundedMoviesInLocalStorage ? JSON.parse(isFoundedMoviesInLocalStorage) : []);
   const [filteredMovies, setFilteredMovies] = useState(isFilteredMoviesInLocalStorage ? JSON.parse(isFilteredMoviesInLocalStorage) : []);
+  const [cardsBeforeRender, setCardsBeforeRender] = useState([]);
   const [renderedCards, setRenderedCards] = useState([]);
   const [isError, setIsError] = useState(false);
 
@@ -43,12 +44,37 @@ function Movies({ savedMovies }) {
   useEffect(() => {
     if (isCheckboxChecked) {
       const filteredMovies = foundedMovies.filter((movie) => movie.duration <= 40);
-      setRenderedCards(filteredMovies);
-
+      setCardsBeforeRender(filteredMovies);
+      localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
     } else {
-      setRenderedCards(foundedMovies);
+      setCardsBeforeRender(foundedMovies);
     }
-  }, [isCheckboxChecked])
+  }, [isCheckboxChecked]);
+
+  useEffect(() => {
+    makeRenderedCardsArray(cardsBeforeRender);
+  }, [savedMovies, cardsBeforeRender]);
+
+  useEffect(() => {
+    console.log(renderedCards)
+  }, [renderedCards])
+
+
+  function makeRenderedCardsArray(array) {
+    console.log(savedMovies);
+
+    let arrayWithSavedCards = JSON.parse(JSON.stringify(array));
+
+    arrayWithSavedCards.map((card) => {
+      savedMovies.map((save) => {
+        if (card.id === save.movieId) {
+          const i = arrayWithSavedCards.indexOf(card);
+          arrayWithSavedCards.splice(i, 1, save);
+        }
+      })
+    });
+    setRenderedCards(arrayWithSavedCards);
+  }
 
   function searchMovies(word) {
     setIsLoading(true);
@@ -66,12 +92,12 @@ function Movies({ savedMovies }) {
 
     if (isCheckboxChecked) {
       const filteredMovies = foundedMovies.filter((movie) => movie.duration <= 40);
-      setRenderedCards(filteredMovies);
+      setCardsBeforeRender(filteredMovies);
       localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
       setIsLoading(false);
     } else {
       localStorage.setItem("isCheckboxChecked", JSON.stringify(false));
-      setRenderedCards(foundedMovies);
+      setCardsBeforeRender(foundedMovies);
       setIsLoading(false);
     }
   }
@@ -86,25 +112,7 @@ function Movies({ savedMovies }) {
     }
   }
 
-  function handleMovieSave(card) {
-    const isSaved = savedMovies.find((movie) => movie.id === card.id);
-    if (!isSaved) {
-      mainApi
-        .saveMovie(
-          card.country,
-          card.director,
-          card.duration,
-          card.year,
-          card.description,
-          card.image,
-          card.trailerLink,
-          card.thumbnail,
-          card.movieId,
-          card.nameRU,
-          card.nameEN
-        )
-    }
-  }
+
 
   return (
     <main className="movies__content">
@@ -116,11 +124,12 @@ function Movies({ savedMovies }) {
       />
       {!isLoading &&
         <MoviesCardList
+          // cards={cardsBeforeRender}
           cards={renderedCards}
           isLoading={isLoading}
           isMovieJS={true}
           isError={isError}
-        // isMovieSaved={false}
+          onMovieSave={handleMovieSave}
         />
       }
       {isLoading &&
