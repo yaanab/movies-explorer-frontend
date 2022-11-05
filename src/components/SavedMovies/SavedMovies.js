@@ -1,17 +1,35 @@
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
+import Preloader from "../PreLoader/Preloader";
 
-function SavedMovies({ handleMovieDelete, cards }) {
+function SavedMovies({
+  handleMovieDelete,
+  isError,
+  handleSearchMovies,
+  isCheckboxChecked,
+  onCheckboxCheck,
+  isLoading,
+  renderedCards,
+  searchWord
+}) {
   return (
     <main className="saved-movies__content">
-      <SearchForm />
+      <SearchForm
+        isCheckboxChecked={isCheckboxChecked}
+        onSearchMovies={handleSearchMovies}
+        onCheckboxCheck={onCheckboxCheck}
+        searchWord={searchWord}
+      />
       <MoviesCardList
-        handleMovieDelete={handleMovieDelete}
-        cards={cards}
-        isMovieFounded={false}
+        cards={renderedCards}
+        isLoading={isLoading}
         isMovieJS={false}
+        handleMovieDelete={handleMovieDelete}
         isError={isError}
       />
+      {isLoading &&
+        <Preloader />
+      }
     </main>
   );
 }

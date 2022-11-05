@@ -20,7 +20,7 @@ function MoviesCardList({
       {cards.length > 0 && !isError &&
         <>
           <div className="movies__cards">
-            {renderedCard.map((card, index) => (
+            {cards.map((card, index) => (
               <MoviesCard key={index} card={card} isMovieJS={isMovieJS} handleMovieButtonClick={handleMovieButtonClick} isMovieSaved={isMovieSaved} isButtonClicked={isButtonClicked} handleMovieDelete={handleMovieDelete}/>
             ))}
           </div>
