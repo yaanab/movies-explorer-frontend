@@ -4,12 +4,11 @@ import saveButtonInactive from "../../images/save-btn.svg";
 import saveButtonActive from "../../images/save-btn-active.svg";
 import deleteButton from "../../images/film-delete-btn.svg";
 
-function MoviesCard({ card, onMovieSave, isMovieJS, isMovieSaved }) {
+function MoviesCard({ card, onMovieSave, isMovieJS }) {
   const currentUser = React.useContext(CurrentUserContext);
-
   const isSaved = card.owner === currentUser._id;
-
-  const buttonImage = (isSaved ? saveButtonActive : saveButtonInactive);
+  const buttonImage = (card.owner ? saveButtonActive : saveButtonInactive);
+  const cardImage = (card.image.url ? (`https://api.nomoreparties.co${card.image.url}`) : card.image)
 
   function handleMovieSave() {
     onMovieSave(card);
@@ -34,7 +33,7 @@ function MoviesCard({ card, onMovieSave, isMovieJS, isMovieSaved }) {
         }
       </div>
       <a href={card.trailerLink} target="_blank" rel="noreferrer" className="movies-card__trailer">
-        <img className="movies-card__image" src={card._id ? card.image : `https://api.nomoreparties.co${card.image.url}`} alt={card.nameRU} />
+        <img className="movies-card__image" src={cardImage} alt={card.nameRU} />
       </a>
     </article>
   );

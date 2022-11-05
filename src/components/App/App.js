@@ -14,6 +14,7 @@ import ProtectedRoute from '../ProtectedRoute/ProtectedRoute';
 import { useFormWithValidation } from '../../hooks/useForm';
 import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import * as mainApi from '../../utils/MainApi';
+import * as moviesApi from '../../utils/MoviesApi';
 
 function App() {
 
@@ -45,6 +46,23 @@ function App() {
   const [isProfileUpdateMessageSuccess, setIsProfileUpdateMessageSuccess] = useState(false);
   const [savedMovies, setSavedMovies] = useState([]);
 
+  const isCardInLocalStorage = localStorage.getItem("cards");
+  const isSearchWordInLocalStorage = localStorage.getItem("searchWord");
+  const isCheckboxCheckedInLocalStorage = localStorage.getItem("isCheckboxChecked");
+  const isFoundedMoviesInLocalStorage = localStorage.getItem("foundedMovies");
+  const isFilteredMoviesInLocalStorage = localStorage.getItem("filteredMovies");
+
+  const [isLoading, setIsLoading] = useState(false);
+  const [cards, setCards] = useState(isCardInLocalStorage ? JSON.parse(isCardInLocalStorage) : []);
+  const [searchWord, setSearchWord] = useState(isSearchWordInLocalStorage ? JSON.parse(isSearchWordInLocalStorage) : "");
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(isCheckboxCheckedInLocalStorage ? JSON.parse(isCheckboxCheckedInLocalStorage) : false);
+  const [foundedMovies, setFoundedMovies] = useState(isFoundedMoviesInLocalStorage ? JSON.parse(isFoundedMoviesInLocalStorage) : []);
+  const [filteredMovies, setFilteredMovies] = useState(isFilteredMoviesInLocalStorage ? JSON.parse(isFilteredMoviesInLocalStorage) : []);
+  const [renderedCards, setRenderedCards] = useState([]);
+  const [isErrorLoadingCards, setIsErrorLoadingCards] = useState(false);
+  const [cardsBeforeRender, setCardsBeforeRender] = useState([])
+
+
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
@@ -68,7 +86,7 @@ function App() {
         }
       })
       .catch((err) => console.log(err));
-  }, [isLoggedIn]);
+  }, []);
 
   function handleNavMenuClick() {
     setIsNavPopupOpen(true);
@@ -99,7 +117,6 @@ function App() {
     mainApi.register(name, email, password)
       .then((res) => {
         if (res.token) {
-          console.log(res.token);
           setIsLoggedIn(true);
           history.push('/movies');
           setIsServerErrorLogin(false);
@@ -200,33 +217,113 @@ function App() {
       });
   }
 
+  useEffect(() => {
+    if (cards.length < 1) {
+      moviesApi.getMovies()
+        .then((cards) => {
+          setCards(cards);
+          localStorage.setItem("cards", JSON.stringify(cards));
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsErrorLoadingCards(true);
+        });
+    }
+  }, [isLoggedIn]);
+
+  async function makeRenderedCardsArray(array) {
+    let arrayWithSavedCards = JSON.parse(JSON.stringify(array));
+    await arrayWithSavedCards.map((card) => {
+      savedMovies.map((save) => {
+        if (card.id === save.movieId) {
+          const i = arrayWithSavedCards.indexOf(card);
+          arrayWithSavedCards.splice(i, 1, save);
+        }
+      })
+    });
+    setRenderedCards(arrayWithSavedCards)
+  }
+
+  useEffect(() => {
+    if (isCheckboxChecked) {
+      const filteredMovies = foundedMovies.filter((movie) => movie.duration <= 40);
+      setRenderedCards(filteredMovies);
+      // makeRenderedCardsArray(filteredMovies);
+      localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
+    } else {
+      // makeRenderedCardsArray(foundedMovies);
+      setRenderedCards(foundedMovies);
+    }
+  }, [isCheckboxChecked]);
+  
+  function handleSearchMovies(word) {
+    setIsLoading(true);
+
+    localStorage.removeItem("searchWord");
+    localStorage.removeItem("foundedMovies");
+    localStorage.removeItem("filteredMovies");
+
+    setSearchWord(word);
+    const foundedMovies = cards.filter((movie) => movie.nameRU.toLowerCase().includes(word.toLowerCase()));
+    setFoundedMovies(foundedMovies);
+
+    localStorage.setItem("searchWord", JSON.stringify(word));
+    localStorage.setItem("foundedMovies", JSON.stringify(foundedMovies));
+
+    if (isCheckboxChecked) {
+      const filteredMovies = foundedMovies.filter((movie) => movie.duration <= 40);
+      // makeRenderedCardsArray(filteredMovies);
+      setRenderedCards(filteredMovies);
+      localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
+      setIsLoading(false);
+    } else {
+      localStorage.setItem("isCheckboxChecked", JSON.stringify(false));
+      setRenderedCards(foundedMovies);
+      // makeRenderedCardsArray(foundedMovies);
+      setIsLoading(false);
+    }
+  }
+
+  function checkboxCheck() {
+    if (isCheckboxChecked) {
+      setIsCheckboxChecked(false);
+      localStorage.setItem("isCheckboxChecked", JSON.stringify(false));
+    } else {
+      setIsCheckboxChecked(true);
+      localStorage.setItem("isCheckboxChecked", JSON.stringify(true));
+    }
+  }
+
   function handleMovieSave(card) {
-      const isSaved = savedMovies.find((movie) => movie.movieId === card.movieId);
-      if (!isSaved || savedMovies.length < 1) {
-        console.log("сохраняем")
-        mainApi
-          .saveMovie({
-            country: card.country,
-            director: card.director,
-            duration: card.duration,
-            year: card.year,
-            description: card.description,
-            image: `https://api.nomoreparties.co${card.image.url}`,
-            trailerLink: card.trailerLink,
-            thumbnail: `https://api.nomoreparties.co${card.image.formats.thumbnail.url}`,
-            movieId: card.id,
-            nameRU: card.nameRU,
-            nameEN: card.nameEN
-          })
-          .then((newCard) => {
-            console.log(newCard)
-            setSavedMovies([...savedMovies, newCard]);
-          })
-          .catch((err) => console.log(err));
-        
-      } else {
-        console.log("удаляем")
-        console.log(card)
+    // const isSaved = savedMovies.find((movie) => movie.movieId === card.movieId);
+    if (!card._id) {
+      console.log("сохраняем")
+      console.log(renderedCards)
+      console.log(savedMovies)
+      mainApi
+        .saveMovie({
+          country: card.country,
+          director: card.director,
+          duration: card.duration,
+          year: card.year,
+          description: card.description,
+          image: `https://api.nomoreparties.co${card.image.url}`,
+          trailerLink: card.trailerLink,
+          thumbnail: `https://api.nomoreparties.co${card.image.formats.thumbnail.url}`,
+          movieId: card.id,
+          nameRU: card.nameRU,
+          nameEN: card.nameEN
+        })
+        .then((newCard) => {
+          console.log(newCard)
+          setRenderedCards((cards) => cards.map((c) => c.id === card.id ? newCard : c));
+          console.log(renderedCards)
+        })
+        .catch((err) => console.log(err));
+
+    } else {
+      console.log("удаляем")
+      // console.log(card)
       //   mainApi
       //     .deleteMovie(card._id)
       //     .then((сard) => {
@@ -234,8 +331,8 @@ function App() {
       //       setSavedMovies(savedMovies.filter((movie) => movie._id !== card._id));
       //     })
       //     .catch((err) => console.log(err));
-      }
     }
+  }
 
   return (
     <CurrentUserContext.Provider value={currentUser}>
@@ -269,8 +366,14 @@ function App() {
                       onNavPopupClose={handleNavPopupClose}
                     />
                     <Movies
-                      savedMovies={savedMovies}
+                      handleSearchMovies={handleSearchMovies}
+                      isCheckboxChecked={isCheckboxChecked}
+                      onCheckboxCheck={checkboxCheck}
+                      isLoading={isLoading}
+                      isError={isErrorLoadingCards}
+                      renderedCards={renderedCards}
                       handleMovieSave={handleMovieSave}
+                      searchWord={searchWord}
                     />
                     <Footer />
                   </>
