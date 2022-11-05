@@ -106,7 +106,7 @@ function App() {
       .finally(() => {
         setIsLoadingSavedCards(false);
       });
-  }, []);
+  }, [isLoggedIn]);
 
   function handleNavMenuClick() {
     setIsNavPopupOpen(true);
