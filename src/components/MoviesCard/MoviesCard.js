@@ -1,15 +1,17 @@
 import React from "react";
+import PreloaderButton from "../PreloaderButton/PreloaderButton";
 import saveButtonInactive from "../../images/save-btn.svg";
 import saveButtonActive from "../../images/save-btn-active.svg";
 import deleteButton from "../../images/film-delete-btn.svg";
 
-function MoviesCard({ 
-  card, 
-  isMovieJS, 
-  handleMovieButtonClick, 
+function MoviesCard({
+  card,
+  isMovieJS,
+  handleMovieButtonClick,
   handleMovieDelete,
-  savedMovies
- }) {
+  savedMovies,
+  isLoadingCardSave
+}) {
   const duration = card.duration >= 60 ? `${Math.floor(card.duration / 60)}ч ${card.duration % 60}м` : `${card.duration} м`;
   const buttonImage = ((savedMovies.find((savedMovie) => savedMovie.movieId === card.id)) ? saveButtonActive : saveButtonInactive);
   const cardImage = (card.image.url ? (`https://api.nomoreparties.co${card.image.url}`) : card.image);
@@ -21,16 +23,17 @@ function MoviesCard({
           <h2 className="movies-card__title">{card.nameRU}</h2>
           <p className="movies-card__duration">{duration}</p>
         </div>
-        {isMovieJS &&
-          <button aria-label="Сохранить фильм" type="button" className="movies-card__button">
-            <img onClick={() => handleMovieButtonClick(card)} className="movies-card__button-img" src={buttonImage} alt="Cохранить фильм" />
+          <button aria-label="Сохранение, удаление фильма" type="button" className="movies-card__button">
+            {isLoadingCardSave &&
+              <PreloaderButton />
+            }
+            {!isLoadingCardSave && isMovieJS &&
+              <img onClick={() => handleMovieButtonClick(card)} className="movies-card__button-img" src={buttonImage} alt="Cохранить фильм" />
+            }
+            {!isLoadingCardSave && !isMovieJS &&
+              <img onClick={() => handleMovieDelete(card)} className="movies-card__button-img" src={deleteButton} alt="Удалить фильм" />
+            }
           </button>
-        }
-        {!isMovieJS &&
-          <button aria-label="Сохранить фильм" type="button" className="movies-card__button">
-            <img onClick={() => handleMovieDelete(card)} className="movies-card__button-img" src={deleteButton} alt="Удалить  фильм" />
-          </button>
-        }
       </div>
       <a href={card.trailerLink} target="_blank" rel="noreferrer" className="movies-card__trailer">
         <img className="movies-card__image" src={cardImage} alt={card.nameRU} />

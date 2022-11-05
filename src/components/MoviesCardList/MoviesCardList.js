@@ -8,7 +8,8 @@ function MoviesCardList({
   handleMovieDelete,
   handleShowMoreButtonClick,
   isAllCardsRendered,
-  savedMovies
+  savedMovies,
+  isLoadingCardSave
 }) {
   return (
     <section className="movies">
@@ -22,6 +23,7 @@ function MoviesCardList({
             handleMovieButtonClick={handleMovieButtonClick} 
             handleMovieDelete={handleMovieDelete} 
             savedMovies={savedMovies}
+            isLoadingCardSave={isLoadingCardSave}
             />
           ))}
         </div>

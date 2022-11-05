@@ -52,6 +52,7 @@ function App() {
 
   const [isLoadingCards, setIsLoadingCards] = useState(false);
   const [isLoadingSavedCards, setIsLoadingSavedCards] = useState(false);
+  const [isLoadingCardSave, setIsLoadingCardSave] = useState(false);
   const [savedMovies, setSavedMovies] = useState([]);
   const [cards, setCards] = useState(isCardInLocalStorage ? JSON.parse(isCardInLocalStorage) : []);
   const [searchWord, setSearchWord] = useState(isSearchWordInLocalStorage ? JSON.parse(isSearchWordInLocalStorage) : "");
@@ -247,27 +248,12 @@ function App() {
       });
   }
 
-  async function makeRenderedCardsArray(array) {
-    let arrayWithSavedCards = JSON.parse(JSON.stringify(array));
-    await arrayWithSavedCards.map((card) => {
-      savedMovies.map((save) => {
-        if (card.id === save.movieId) {
-          const i = arrayWithSavedCards.indexOf(card);
-          arrayWithSavedCards.splice(i, 1, save);
-        }
-      })
-    });
-    setRenderedCards(arrayWithSavedCards)
-  }
-
   useEffect(() => {
     if (isCheckboxChecked) {
       const filteredMovies = foundedMovies.filter((movie) => movie.duration <= 40);
       setRenderedCards(filteredMovies);
-      // makeRenderedCardsArray(filteredMovies);
       localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
     } else {
-      // makeRenderedCardsArray(foundedMovies);
       setRenderedCards(foundedMovies);
     }
   }, [isCheckboxChecked]);
@@ -288,14 +274,12 @@ function App() {
 
     if (isCheckboxChecked) {
       const filteredMovies = foundedMovies.filter((movie) => movie.duration <= 40);
-      // makeRenderedCardsArray(filteredMovies);
       setRenderedCards(filteredMovies);
       localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
       setIsLoadingCards(false);
     } else {
       localStorage.setItem("isCheckboxChecked", JSON.stringify(false));
       setRenderedCards(foundedMovies);
-      // makeRenderedCardsArray(foundedMovies);
       setIsLoadingCards(false);
     }
   }
@@ -319,6 +303,7 @@ function App() {
   }
 
   function handleMovieSave(card) {
+    setIsLoadingCardSave(true);
     mainApi
       .saveMovie({
         country: card.country,
@@ -336,17 +321,20 @@ function App() {
       .then((newCard) => {
         setSavedMovies([...savedMovies, newCard]);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoadingCardSave(false));
   }
 
   function handleMovieDelete(card) {
+    const cardIdWithoutOwner = savedMovies.find((savedMovie) => savedMovie.movieId === card.id)._id;
+    const cardId = (card._id ? card._id : cardIdWithoutOwner);
     mainApi
-      .deleteMovie(card._id)
+      .deleteMovie(cardId)
       .then(() => {
-        console.log(card)
-        setSavedMovies(savedMovies.filter((savedMovie) => savedMovie._id !== card._id));
+        setSavedMovies(savedMovies.filter((savedMovie) => savedMovie._id !== cardId));
       })
-      .catch((err) => console.log(err));
+      .catch((err) => console.log(err))
+      .finally(() => setIsLoadingCardSave(false));
   }
 
   return (
@@ -390,6 +378,7 @@ function App() {
                       handleMovieButtonClick={handleMovieButtonClick}
                       searchWord={searchWord}
                       savedMovies={savedMovies}
+                      isLoadingCardSave={isLoadingCardSave}
                     />
                     <Footer />
                   </>
@@ -414,6 +403,7 @@ function App() {
                       isError={isErrorLoadingSavedCards}
                       isLoading={isLoadingSavedCards}
                       cards={savedMovies}
+                      isLoadingCardSave={isLoadingCardSave}
                     />
                     <Footer />
                   </>
