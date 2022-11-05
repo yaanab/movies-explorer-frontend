@@ -326,8 +326,8 @@ function App() {
   }
 
   function handleMovieDelete(card) {
-    const cardIdWithoutOwner = savedMovies.find((savedMovie) => savedMovie.movieId === card.id)._id;
-    const cardId = (card._id ? card._id : cardIdWithoutOwner);
+    setIsLoadingCardSave(true);
+    const cardId = (card._id ? card._id : savedMovies.find((savedMovie) => savedMovie.movieId === card.id)._id);
     mainApi
       .deleteMovie(cardId)
       .then(() => {
@@ -403,6 +403,7 @@ function App() {
                       isError={isErrorLoadingSavedCards}
                       isLoading={isLoadingSavedCards}
                       cards={savedMovies}
+                      savedMovies={savedMovies}
                       isLoadingCardSave={isLoadingCardSave}
                     />
                     <Footer />

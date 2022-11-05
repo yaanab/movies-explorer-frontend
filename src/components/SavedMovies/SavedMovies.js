@@ -8,6 +8,7 @@ function SavedMovies({
   isError,
   isLoading,
   cards,
+  savedMovies,
   isLoadingCardSave
 }) {
   const [searchWord, setSearchWord] = useState("");
@@ -66,6 +67,7 @@ function SavedMovies({
           isError={isError}
           isMovieJS={false}
           handleMovieDelete={handleMovieDelete}
+          savedMovies={savedMovies}
           isLoadingCardSave={isLoadingCardSave}
         />
       }
