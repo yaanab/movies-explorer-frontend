@@ -15,9 +15,9 @@ function MoviesCardList({
     <section className="movies">
       {cards.length > 0 && !isError &&
         <div className="movies__cards">
-          {cards.map((card, index) => (
+          {cards.map((card) => (
             <MoviesCard 
-            key={index} 
+            key={card.id ? card.id : card._id} 
             card={card} 
             isMovieJS={isMovieJS} 
             handleMovieButtonClick={handleMovieButtonClick} 
