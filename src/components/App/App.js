@@ -209,6 +209,7 @@ function App() {
         setSearchWord("");
         setIsCheckboxChecked(false);
         setFoundedMovies([]);
+        setRenderedCards([]);
         setIsErrorLoadingCards(false);
         setIsErrorLoadingSavedCards(false);
         history.push('/');
