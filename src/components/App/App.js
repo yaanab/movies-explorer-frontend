@@ -44,15 +44,15 @@ function App() {
   const [isServerErrorProfile, setIsServerErrorProfile] = useState(false);
   const [isEditProfile, setIsEditProfile] = useState(false);
   const [isProfileUpdateMessageSuccess, setIsProfileUpdateMessageSuccess] = useState(false);
-  const [savedMovies, setSavedMovies] = useState([]);
 
   const isCardInLocalStorage = localStorage.getItem("cards");
   const isSearchWordInLocalStorage = localStorage.getItem("searchWord");
   const isCheckboxCheckedInLocalStorage = localStorage.getItem("isCheckboxChecked");
   const isFoundedMoviesInLocalStorage = localStorage.getItem("foundedMovies");
-  const isFilteredMoviesInLocalStorage = localStorage.getItem("filteredMovies");
 
-  const [isLoading, setIsLoading] = useState(false);
+  const [isLoadingCards, setIsLoadingCards] = useState(false);
+  const [isLoadingSavedCards, setIsLoadingSavedCards] = useState(false);
+  const [savedMovies, setSavedMovies] = useState([]);
   const [cards, setCards] = useState(isCardInLocalStorage ? JSON.parse(isCardInLocalStorage) : []);
   const [searchWord, setSearchWord] = useState(isSearchWordInLocalStorage ? JSON.parse(isSearchWordInLocalStorage) : "");
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(isCheckboxCheckedInLocalStorage ? JSON.parse(isCheckboxCheckedInLocalStorage) : false);
@@ -79,6 +79,21 @@ function App() {
   }, [isLoggedIn]);
 
   useEffect(() => {
+    if (cards.length < 1) {
+      moviesApi.getMovies()
+        .then((cards) => {
+          setCards(cards);
+          localStorage.setItem("cards", JSON.stringify(cards));
+        })
+        .catch((err) => {
+          console.log(err);
+          setIsErrorLoadingCards(true);
+        });
+    }
+  }, [isLoggedIn]);
+
+  useEffect(() => {
+    setIsLoadingSavedCards(true);
     mainApi.getSavedMovies()
       .then((res) => {
         if (res) {
@@ -88,6 +103,9 @@ function App() {
       .catch((err) => {
         console.log(err);
         setIsErrorLoadingSavedCards(true);
+      })
+      .finally(() => {
+        setIsLoadingSavedCards(false);
       });
   }, []);
 
@@ -231,19 +249,7 @@ function App() {
       });
   }
 
-  useEffect(() => {
-    if (cards.length < 1) {
-      moviesApi.getMovies()
-        .then((cards) => {
-          setCards(cards);
-          localStorage.setItem("cards", JSON.stringify(cards));
-        })
-        .catch((err) => {
-          console.log(err);
-          setIsErrorLoadingCards(true);
-        });
-    }
-  }, [isLoggedIn]);
+
 
   async function makeRenderedCardsArray(array) {
     let arrayWithSavedCards = JSON.parse(JSON.stringify(array));
@@ -271,7 +277,7 @@ function App() {
   }, [isCheckboxChecked]);
 
   function handleSearchMovies(word) {
-    setIsLoading(true);
+    setIsLoadingCards(true);
 
     localStorage.removeItem("searchWord");
     localStorage.removeItem("foundedMovies");
@@ -289,12 +295,12 @@ function App() {
       // makeRenderedCardsArray(filteredMovies);
       setRenderedCards(filteredMovies);
       localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
-      setIsLoading(false);
+      setIsLoadingCards(false);
     } else {
       localStorage.setItem("isCheckboxChecked", JSON.stringify(false));
       setRenderedCards(foundedMovies);
       // makeRenderedCardsArray(foundedMovies);
-      setIsLoading(false);
+      setIsLoadingCards(false);
     }
   }
 
@@ -383,7 +389,7 @@ function App() {
                       handleSearchMovies={handleSearchMovies}
                       isCheckboxChecked={isCheckboxChecked}
                       onCheckboxCheck={checkboxCheck}
-                      isLoading={isLoading}
+                      isLoading={isLoadingCards}
                       isError={isErrorLoadingCards}
                       renderedCards={renderedCards}
                       handleMovieButtonClick={handleMovieButtonClick}
@@ -410,8 +416,12 @@ function App() {
                     <SavedMovies
                       handleMovieDelete={handleMovieDelete}
                       isError={isErrorLoadingSavedCards}
-                      // cards={cards}
-                      isFilmSaved={true}
+                      // handleSearchMovies={ }
+                      // isCheckboxChecked={ }
+                      // onCheckboxCheck={ }
+                      isLoading={isLoadingSavedCards}
+                      renderedCards={savedMovies}
+                      // searchWord={ }
                     />
                     <Footer />
                   </>
