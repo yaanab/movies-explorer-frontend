@@ -11,9 +11,9 @@ function Movies({
   isError,
   cards,
   handleMovieButtonClick,
-  searchWord
+  searchWord,
+  savedMovies
 }) {
-
   const [renderedCards, setRenderedCards] = useState([]);
   const [isAllCardsRendered, setIsAllCardsRendered] = useState(false);
 
@@ -82,6 +82,7 @@ function Movies({
           isError={isError}
           handleShowMoreButtonClick={handleShowMoreButtonClick}
           isAllCardsRendered={isAllCardsRendered}
+          savedMovies={savedMovies}
         />
       }
       {isLoading &&

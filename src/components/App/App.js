@@ -311,7 +311,7 @@ function App() {
   }
 
   function handleMovieButtonClick(card) {
-    if (savedMovies.find((savedMovies) => savedMovies.movieId === card.id)) {
+    if (savedMovies.find((savedMovie) => savedMovie.movieId === card.id)) {
       handleMovieDelete(card);
     } else {
       handleMovieSave(card);
@@ -335,17 +335,16 @@ function App() {
       })
       .then((newCard) => {
         setSavedMovies([...savedMovies, newCard]);
-        // setRenderedCards((cards) => cards.map((c) => c.id === card.id ? newCard : c));
       })
       .catch((err) => console.log(err));
   }
 
   function handleMovieDelete(card) {
-    const cardId = card._id ? card._id : savedMovies.find((savedMovie) => savedMovie.movieId === card.id)._id;
     mainApi
-      .deleteMovie(cardId)
+      .deleteMovie(card._id)
       .then(() => {
-        setSavedMovies(savedMovies.filter((savedMovie) => savedMovie._id !== cardId));
+        console.log(card)
+        setSavedMovies(savedMovies.filter((savedMovie) => savedMovie._id !== card._id));
       })
       .catch((err) => console.log(err));
   }
@@ -390,6 +389,7 @@ function App() {
                       cards={renderedCards}
                       handleMovieButtonClick={handleMovieButtonClick}
                       searchWord={searchWord}
+                      savedMovies={savedMovies}
                     />
                     <Footer />
                   </>

@@ -1,5 +1,4 @@
 import React from "react";
-import { CurrentUserContext } from '../../contexts/CurrentUserContext';
 import saveButtonInactive from "../../images/save-btn.svg";
 import saveButtonActive from "../../images/save-btn-active.svg";
 import deleteButton from "../../images/film-delete-btn.svg";
@@ -9,11 +8,10 @@ function MoviesCard({
   isMovieJS, 
   handleMovieButtonClick, 
   handleMovieDelete,
+  savedMovies
  }) {
-  const currentUser = React.useContext(CurrentUserContext);
   const duration = card.duration >= 60 ? `${Math.floor(card.duration / 60)}ч ${card.duration % 60}м` : `${card.duration} м`;
-  const isSaved = card.owner === currentUser._id;
-  const buttonImage = (card.owner ? saveButtonActive : saveButtonInactive);
+  const buttonImage = ((savedMovies.find((savedMovie) => savedMovie.movieId === card.id)) ? saveButtonActive : saveButtonInactive);
   const cardImage = (card.image.url ? (`https://api.nomoreparties.co${card.image.url}`) : card.image);
 
   return (

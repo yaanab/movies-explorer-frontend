@@ -7,14 +7,22 @@ function MoviesCardList({
   isError,
   handleMovieDelete,
   handleShowMoreButtonClick,
-  isAllCardsRendered
+  isAllCardsRendered,
+  savedMovies
 }) {
   return (
     <section className="movies">
       {cards.length > 0 && !isError &&
         <div className="movies__cards">
           {cards.map((card, index) => (
-            <MoviesCard key={index} card={card} isMovieJS={isMovieJS} handleMovieButtonClick={handleMovieButtonClick} handleMovieDelete={handleMovieDelete} />
+            <MoviesCard 
+            key={index} 
+            card={card} 
+            isMovieJS={isMovieJS} 
+            handleMovieButtonClick={handleMovieButtonClick} 
+            handleMovieDelete={handleMovieDelete} 
+            savedMovies={savedMovies}
+            />
           ))}
         </div>
       }
