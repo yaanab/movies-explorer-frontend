@@ -1,5 +1,5 @@
-// const BASE_URL = 'https://api.yaana.movies.nomoredomains.icu';
-const BASE_URL = 'http://localhost:3000';
+const BASE_URL = 'https://api.yaana.movies.nomoredomains.icu';
+// const BASE_URL = 'http://localhost:3000';
 
 const headers = {
   'Content-Type': 'application/json'

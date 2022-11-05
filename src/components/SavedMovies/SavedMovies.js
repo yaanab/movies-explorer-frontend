@@ -18,7 +18,7 @@ function SavedMovies({
 
   useEffect(() => {
     setRenderedCards(cards);
-  }, [cards]);
+  }, []);
 
   useEffect(() => {
     if (isCheckboxChecked && searchWord.length < 1) {

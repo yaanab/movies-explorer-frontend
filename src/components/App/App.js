@@ -210,6 +210,7 @@ function App() {
         setIsCheckboxChecked(false);
         setFoundedMovies([]);
         setRenderedCards([]);
+        setSavedMovies([]);
         setIsErrorLoadingCards(false);
         setIsErrorLoadingSavedCards(false);
         history.push('/');
