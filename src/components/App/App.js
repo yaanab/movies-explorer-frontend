@@ -389,7 +389,7 @@ function App() {
                       onCheckboxCheck={checkboxCheck}
                       isLoading={isLoadingCards}
                       isError={isErrorLoadingCards}
-                      renderedCards={renderedCards}
+                      cards={renderedCards}
                       handleMovieButtonClick={handleMovieButtonClick}
                       searchWord={searchWord}
                     />
