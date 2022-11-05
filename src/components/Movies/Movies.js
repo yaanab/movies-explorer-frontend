@@ -14,8 +14,28 @@ function Movies({
   isError
 }) {
 
-  const [renderedCards, setRenderedCards] = useState(sliceFirstRenderedCards(cards));
+  const [renderedCards, setRenderedCards] = useState([]);
   const [isAllCardsRendered, setIsAllCardsRendered] = useState(false);
+
+useEffect(() => {
+  setRenderedCards(sliceFirstRenderedCards(cards));
+}, [cards]);
+
+useEffect(() => {
+  setIsAllCardsRendered(cards.length === renderedCards.length);
+}, [cards, renderedCards]);
+
+  useEffect(() => {
+    function onResize() {
+      setTimeout(() => setRenderedCards(sliceFirstRenderedCards(cards)), 2000);
+    }
+
+    window.addEventListener("resize", onResize);
+
+    return () => {
+      window.removeEventListener("resize", onResize);
+    }
+  }, []);
 
   function sliceFirstRenderedCards(cards) {
     const screenWidth = window.screen.width;
@@ -30,18 +50,6 @@ function Movies({
     }
     return cards;
   }
-
-  useEffect(() => {
-    function onResize() {
-      setTimeout(() => setRenderedCards(sliceFirstRenderedCards(cards)), 2000);
-    }
-
-    window.addEventListener("resize", onResize);
-
-    return () => {
-      window.removeEventListener("resize", onResize);
-    }
-  }, []);
 
   function handleShowMoreButtonClick() {
     const screenWidth = window.screen.width;
