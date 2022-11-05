@@ -1,6 +1,14 @@
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList({ cards, handleMovieButtonClick, isButtonClicked, isMovieJS, isMovieSaved, isError }) {
+function MoviesCardList({ 
+  cards, 
+  handleMovieButtonClick, 
+  isButtonClicked, 
+  isMovieJS, 
+  isMovieSaved, 
+  isError,
+  handleMovieDelete
+ }) {
 // const [renderedCard, setRenderedCards] = useState([]);
 
 // useEffect(() => {
@@ -13,7 +21,7 @@ function MoviesCardList({ cards, handleMovieButtonClick, isButtonClicked, isMovi
         <>
           <div className="movies__cards">
             {renderedCard.map((card, index) => (
-              <MoviesCard key={index} card={card} isMovieJS={isMovieJS} handleMovieButtonClick={handleMovieButtonClick} isMovieSaved={isMovieSaved} isButtonClicked={isButtonClicked} />
+              <MoviesCard key={index} card={card} isMovieJS={isMovieJS} handleMovieButtonClick={handleMovieButtonClick} isMovieSaved={isMovieSaved} isButtonClicked={isButtonClicked} handleMovieDelete={handleMovieDelete}/>
             ))}
           </div>
           <button type="button" className="movies__button-show-more">Ещё</button>
