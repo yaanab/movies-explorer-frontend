@@ -59,6 +59,7 @@ function App() {
   const [foundedMovies, setFoundedMovies] = useState(isFoundedMoviesInLocalStorage ? JSON.parse(isFoundedMoviesInLocalStorage) : []);
   const [renderedCards, setRenderedCards] = useState([]);
   const [isErrorLoadingCards, setIsErrorLoadingCards] = useState(false);
+  const [isErrorLoadingSavedCards, setIsErrorLoadingSavedCards] = useState(false);
   const [cardsBeforeRender, setCardsBeforeRender] = useState([])
 
 
@@ -84,7 +85,10 @@ function App() {
           setSavedMovies(res);
         }
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err);
+        setIsErrorLoadingSavedCards(true);
+      });
   }, []);
 
   function handleNavMenuClick() {
@@ -189,6 +193,7 @@ function App() {
         setIsCheckboxChecked(false);
         setFoundedMovies([]);
         setIsErrorLoadingCards(false);
+        setIsErrorLoadingSavedCards(false);
         history.push('/');
       })
       .catch((err) => console.log(err));
@@ -404,6 +409,7 @@ function App() {
                     />
                     <SavedMovies
                       handleMovieDelete={handleMovieDelete}
+                      isError={isErrorLoadingSavedCards}
                       // cards={cards}
                       isFilmSaved={true}
                     />
