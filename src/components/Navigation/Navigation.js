@@ -1,8 +1,10 @@
 import { Link, NavLink } from 'react-router-dom';
 import profileIcon from '../../images/header-profile-icon.svg';
 
-function Navigation({ isNavPopupOpen, setIsNavPopupOpen }) {
-
+function Navigation({ 
+  isNavPopupOpen, 
+  setIsNavPopupOpen 
+}) {
   function closeNavPopup() {
     setIsNavPopupOpen(false);
   }

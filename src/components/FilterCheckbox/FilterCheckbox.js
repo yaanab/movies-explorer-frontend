@@ -1,4 +1,8 @@
-function FilterCheckbox({ label, onCheckboxCheck, isCheckboxChecked }) {
+function FilterCheckbox({ 
+  label, 
+  onCheckboxCheck, 
+  isCheckboxChecked 
+}) {
   return (
     <div className="filter__content">
       <input type="checkbox" onChange={onCheckboxCheck} defaultChecked={isCheckboxChecked} id='checkbox' className='filter__checkbox' />

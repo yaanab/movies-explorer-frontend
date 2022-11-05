@@ -1,29 +1,29 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Preloader from "../PreLoader/Preloader";
 
 function Movies({
-  handleMovieButtonClick,
-  isCheckboxChecked,
   handleSearchMovies,
+  isCheckboxChecked,
   onCheckboxCheck,
-  searchWord,
-  cards,
   isLoading,
-  isError
+  isError,
+  cards,
+  handleMovieButtonClick,
+  searchWord
 }) {
 
   const [renderedCards, setRenderedCards] = useState([]);
   const [isAllCardsRendered, setIsAllCardsRendered] = useState(false);
 
-useEffect(() => {
-  setRenderedCards(sliceFirstRenderedCards(cards));
-}, [cards]);
+  useEffect(() => {
+    setRenderedCards(sliceFirstRenderedCards(cards));
+  }, [cards]);
 
-useEffect(() => {
-  setIsAllCardsRendered(cards.length === renderedCards.length);
-}, [cards, renderedCards]);
+  useEffect(() => {
+    setIsAllCardsRendered(cards.length === renderedCards.length);
+  }, [cards, renderedCards]);
 
   useEffect(() => {
     function onResize() {

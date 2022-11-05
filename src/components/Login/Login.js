@@ -10,7 +10,6 @@ function Login({
   inputValidationMessageDefault,
   inputValidationMessageEmail
  }) {
-
   const { values, handleChange, errors, isValid } = useFormWithValidation({});
 
   function handleSubmit(e) {

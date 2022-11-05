@@ -3,8 +3,13 @@ import logo from '../../images/header-logo.svg';
 import menuIcon from '../../images/menu-icon.svg';
 import Navigation from '../Navigation/Navigation';
 
-function Header({ isNavPopupOpen, setIsNavPopupOpen, onNavMenuClick, onNavPopupClose, isLoggedIn }) {
-
+function Header({ 
+  isNavPopupOpen, 
+  setIsNavPopupOpen, 
+  onNavMenuClick, 
+  onNavPopupClose, 
+  isLoggedIn 
+}) {
   function stopPropagation(e) {
     e.stopPropagation();
   }

@@ -1,10 +1,14 @@
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import FilterCheckbox from "../FilterCheckbox/FilterCheckbox";
 import { useFormWithValidation } from '../../hooks/useForm';
 import findButton from '../../images/find-button.svg';
 
-function SearchForm({ onSearchMovies, onCheckboxCheck, isCheckboxChecked, searchWord }) {
-
+function SearchForm({ 
+  isCheckboxChecked, 
+  onSearchMovies, 
+  onCheckboxCheck, 
+  searchWord
+ }) {
   const { values, setValues, handleChange } = useFormWithValidation({});
 
   useEffect(() => {

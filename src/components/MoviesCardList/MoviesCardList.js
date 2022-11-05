@@ -9,12 +9,6 @@ function MoviesCardList({
   handleShowMoreButtonClick,
   isAllCardsRendered
 }) {
-  // const [renderedCard, setRenderedCards] = useState([]);
-
-  // useEffect(() => {
-  //   setRenderedCards(cards);
-  // }, [cards])
-
   return (
     <section className="movies">
       {cards.length > 0 && !isError &&

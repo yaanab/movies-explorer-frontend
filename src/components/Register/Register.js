@@ -12,7 +12,6 @@ function Register({
   inputValidationMessageName,
   inputValidationMessageEmail
 }) {
-
   const { values, handleChange, errors, isValid } = useFormWithValidation({});
 
   function handleSubmit(e) {

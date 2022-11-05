@@ -9,7 +9,6 @@ function SavedMovies({
   isLoading,
   cards,
 }) {
-
   const [searchWord, setSearchWord] = useState("");
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
   const [foundedMovies, setFoundedMovies] = useState([]);
@@ -63,10 +62,9 @@ function SavedMovies({
       {!isLoading &&
         <MoviesCardList
           cards={renderedCards}
-          isLoading={isLoading}
+          isError={isError}
           isMovieJS={false}
           handleMovieDelete={handleMovieDelete}
-          isError={isError}
         />
       }
       {isLoading &&

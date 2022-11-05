@@ -17,7 +17,6 @@ function Profile({
   onLogOut,
   isProfileUpdateMessageSuccess
 }) {
-
   const currentUser = useContext(CurrentUserContext);
   const { values, setValues, handleChange, errors, isValid } = useFormWithValidation({});
 
