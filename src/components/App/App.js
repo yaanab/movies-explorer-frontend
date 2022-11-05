@@ -57,7 +57,6 @@ function App() {
   const [searchWord, setSearchWord] = useState(isSearchWordInLocalStorage ? JSON.parse(isSearchWordInLocalStorage) : "");
   const [isCheckboxChecked, setIsCheckboxChecked] = useState(isCheckboxCheckedInLocalStorage ? JSON.parse(isCheckboxCheckedInLocalStorage) : false);
   const [foundedMovies, setFoundedMovies] = useState(isFoundedMoviesInLocalStorage ? JSON.parse(isFoundedMoviesInLocalStorage) : []);
-  const [filteredMovies, setFilteredMovies] = useState(isFilteredMoviesInLocalStorage ? JSON.parse(isFilteredMoviesInLocalStorage) : []);
   const [renderedCards, setRenderedCards] = useState([]);
   const [isErrorLoadingCards, setIsErrorLoadingCards] = useState(false);
   const [cardsBeforeRender, setCardsBeforeRender] = useState([])
@@ -179,7 +178,17 @@ function App() {
     mainApi.logOut()
       .then(() => {
         setIsLoggedIn(false);
-        localStorage.removeItem('jwt');
+        localStorage.removeItem("jwt");
+        localStorage.removeItem("cards");
+        localStorage.removeItem("searchWord");
+        localStorage.removeItem("isCheckboxChecked");
+        localStorage.removeItem("foundedMovies");
+        localStorage.removeItem("filteredMovies");
+        setCards([]);
+        setSearchWord("");
+        setIsCheckboxChecked(false);
+        setFoundedMovies([]);
+        setIsErrorLoadingCards(false);
         history.push('/');
       })
       .catch((err) => console.log(err));
