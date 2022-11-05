@@ -4,7 +4,12 @@ import saveButtonInactive from "../../images/save-btn.svg";
 import saveButtonActive from "../../images/save-btn-active.svg";
 import deleteButton from "../../images/film-delete-btn.svg";
 
-function MoviesCard({ card, handleMovieButtonClick, isMovieJS, handleMovieDelete }) {
+function MoviesCard({ 
+  card, 
+  isMovieJS, 
+  handleMovieButtonClick, 
+  handleMovieDelete,
+ }) {
   const currentUser = React.useContext(CurrentUserContext);
   const duration = card.duration >= 60 ? `${Math.floor(card.duration / 60)}ч ${card.duration % 60}м` : `${card.duration} м`;
   const isSaved = card.owner === currentUser._id;

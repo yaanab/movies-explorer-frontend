@@ -43,6 +43,20 @@ function Movies({
     }
   }, []);
 
+  function handleShowMoreButtonClick() {
+    const screenWidth = window.screen.width;
+
+    if (screenWidth < 1279 && (cards.length - renderedCards.length > 2)) {
+      setRenderedCards(cards.slice(0, renderedCards.length + 2));
+      return;
+    } else if (screenWidth >= 1279 && (cards.length - renderedCards.length > 3)) {
+      setRenderedCards(cards.slice(0, renderedCards.length + 3));
+      return;
+    } else {
+      setRenderedCards(cards);
+      setIsAllCardsRendered(true);
+    }
+  }
 
   return (
     <main className="movies__content">
@@ -55,10 +69,11 @@ function Movies({
       {!isLoading &&
         <MoviesCardList
           cards={renderedCards}
-          isLoading={isLoading}
+          handleMovieButtonClick={handleMovieButtonClick}
           isMovieJS={true}
           isError={isError}
-          handleMovieButtonClick={handleMovieButtonClick}
+          handleShowMoreButtonClick={handleShowMoreButtonClick}
+          isAllCardsRendered={isAllCardsRendered}
         />
       }
       {isLoading &&

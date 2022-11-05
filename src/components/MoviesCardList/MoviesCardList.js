@@ -3,11 +3,11 @@ import MoviesCard from '../MoviesCard/MoviesCard';
 function MoviesCardList({
   cards,
   handleMovieButtonClick,
-  isButtonClicked,
   isMovieJS,
-  isMovieSaved,
   isError,
-  handleMovieDelete
+  handleMovieDelete,
+  handleShowMoreButtonClick,
+  isAllCardsRendered
 }) {
   // const [renderedCard, setRenderedCards] = useState([]);
 
@@ -20,12 +20,12 @@ function MoviesCardList({
       {cards.length > 0 && !isError &&
         <div className="movies__cards">
           {cards.map((card, index) => (
-            <MoviesCard key={index} card={card} isMovieJS={isMovieJS} handleMovieButtonClick={handleMovieButtonClick} isMovieSaved={isMovieSaved} isButtonClicked={isButtonClicked} handleMovieDelete={handleMovieDelete} />
+            <MoviesCard key={index} card={card} isMovieJS={isMovieJS} handleMovieButtonClick={handleMovieButtonClick} handleMovieDelete={handleMovieDelete} />
           ))}
         </div>
       }
-      {isMovieJS &&
-        <button type="button" className="movies__button-show-more">Ещё</button>
+      {isMovieJS && !isAllCardsRendered &&
+        <button onClick={handleShowMoreButtonClick} type="button" className="movies__button-show-more">Ещё</button>
       }
       {cards.length < 1 && !isError &&
         <p className="movies__not-found">Ничего не найдено</p>
