@@ -264,7 +264,7 @@ function App() {
       setRenderedCards(foundedMovies);
     }
   }, [isCheckboxChecked]);
-  
+
   function handleSearchMovies(word) {
     setIsLoading(true);
 
@@ -312,181 +312,175 @@ function App() {
   }
 
   function handleMovieSave(card) {
-    // const isSaved = savedMovies.find((movie) => movie.movieId === card.movieId);
-    if (!card._id) {
-      console.log("сохраняем")
-      console.log(renderedCards)
-      console.log(savedMovies)
-      mainApi
-        .saveMovie({
-          country: card.country,
-          director: card.director,
-          duration: card.duration,
-          year: card.year,
-          description: card.description,
-          image: `https://api.nomoreparties.co${card.image.url}`,
-          trailerLink: card.trailerLink,
-          thumbnail: `https://api.nomoreparties.co${card.image.formats.thumbnail.url}`,
-          movieId: card.id,
-          nameRU: card.nameRU,
-          nameEN: card.nameEN
-        })
-        .then((newCard) => {
-          console.log(newCard)
-          setRenderedCards((cards) => cards.map((c) => c.id === card.id ? newCard : c));
-          console.log(renderedCards)
-        })
-        .catch((err) => console.log(err));
+    mainApi
+      .saveMovie({
+        country: card.country,
+        director: card.director,
+        duration: card.duration,
+        year: card.year,
+        description: card.description,
+        image: `https://api.nomoreparties.co${card.image.url}`,
+        trailerLink: card.trailerLink,
+        thumbnail: `https://api.nomoreparties.co${card.image.formats.thumbnail.url}`,
+        movieId: card.id,
+        nameRU: card.nameRU,
+        nameEN: card.nameEN
+      })
+      .then((newCard) => {
+        setSavedMovies([...savedMovies, newCard]);
+        // setRenderedCards((cards) => cards.map((c) => c.id === card.id ? newCard : c));
+      })
+      .catch((err) => console.log(err));
 
-    } else {
-      console.log("удаляем")
-      // console.log(card)
-      //   mainApi
-      //     .deleteMovie(card._id)
-      //     .then((сard) => {
-      //       console.log(сard);
-      //       setSavedMovies(savedMovies.filter((movie) => movie._id !== card._id));
-      //     })
-      //     .catch((err) => console.log(err));
-    }
+  } else {
+    console.log("удаляем")
+    // console.log(card)
+    //   mainApi
+    //     .deleteMovie(card._id)
+    //     .then((сard) => {
+    //       console.log(сard);
+    //       setSavedMovies(savedMovies.filter((movie) => movie._id !== card._id));
+    //     })
+    //     .catch((err) => console.log(err));
   }
+}
 
-  return (
-    <CurrentUserContext.Provider value={currentUser}>
-      <div className="app_content">
-        <div className="app_page">
-          <Switch>
-            <Route exact path="/">
-              <div className="header__main">
-                <Header
-                  isLoggedIn={isLoggedIn}
-                  isNavPopupOpen={isNavPopupOpen}
-                  setIsNavPopupOpen={setIsNavPopupOpen}
-                  onNavMenuClick={handleNavMenuClick}
-                  onNavPopupClose={handleNavPopupClose}
-                />
-              </div>
-              <Main />
-              <Footer />
-            </Route>
-            <ProtectedRoute
-              path="/movies"
-              isLoggedIn={isLoggedIn}
-              component={() => {
-                return (
-                  <>
-                    <Header
-                      isLoggedIn={isLoggedIn}
-                      isNavPopupOpen={isNavPopupOpen}
-                      setIsNavPopupOpen={setIsNavPopupOpen}
-                      onNavMenuClick={handleNavMenuClick}
-                      onNavPopupClose={handleNavPopupClose}
-                    />
-                    <Movies
-                      handleSearchMovies={handleSearchMovies}
-                      isCheckboxChecked={isCheckboxChecked}
-                      onCheckboxCheck={checkboxCheck}
-                      isLoading={isLoading}
-                      isError={isErrorLoadingCards}
-                      renderedCards={renderedCards}
-                      handleMovieButtonClick={handleMovieButtonClick}
-                      searchWord={searchWord}
-                    />
-                    <Footer />
-                  </>
-                );
-              }}
-            />
-            <ProtectedRoute
-              path="/saved-movies"
-              isLoggedIn={isLoggedIn}
-              component={() => {
-                return (
-                  <>
-                    <Header
-                      isLoggedIn={isLoggedIn}
-                      isNavPopupOpen={isNavPopupOpen}
-                      setIsNavPopupOpen={setIsNavPopupOpen}
-                      onNavMenuClick={handleNavMenuClick}
-                      onNavPopupClose={handleNavPopupClose}
-                    />
-                    <SavedMovies
-                      // cards={cards}
-                      isFilmSaved={true}
-                    />
-                    <Footer />
-                  </>
-                );
-              }}
-            />
-            <ProtectedRoute
-              path="/profile"
-              isLoggedIn={isLoggedIn}
-              component={() => {
-                return (
-                  <>
-                    <Header
-                      isLoggedIn={isLoggedIn}
-                      isNavPopupOpen={isNavPopupOpen}
-                      setIsNavPopupOpen={setIsNavPopupOpen}
-                      onNavMenuClick={handleNavMenuClick}
-                      onNavPopupClose={handleNavPopupClose}
-                    />
-                    <Profile
-                      isEditProfile={isEditProfile}
-                      handleEditProfile={onSetIsEditUserProfile}
-                      emailPattern={emailPattern}
-                      namePattern={namePattern}
-                      onUpdateUser={onUpdateUser}
-                      isSendingUserDataToServer={isSendingUserDataToServer}
-                      isServerError={isServerErrorProfile}
-                      serverErrorMessage={isServerErrorMessage}
-                      inputValidationMessageDefault={inputValidationMessageDefault}
-                      inputValidationMessageName={inputValidationMessageName}
-                      inputValidationMessageEmail={inputValidationMessageEmail}
-                      onLogOut={onLogOut}
-                      isProfileUpdateMessageSuccess={isProfileUpdateMessageSuccess}
-                    />
-                  </>
-                );
-              }}
-            />
-            <Route path="/signup">
-              <Register
-                onRegister={handleUserRegister}
-                isSendingUserDataToServer={isSendingUserDataToServer}
-                isServerErrorRegister={isServerErrorRegister}
-                isServerErrorMessage={isServerErrorMessage}
-                emailPattern={emailPattern}
-                namePattern={namePattern}
-                inputValidationMessageDefault={inputValidationMessageDefault}
-                inputValidationMessageName={inputValidationMessageName}
-                inputValidationMessageEmail={inputValidationMessageEmail}
+return (
+  <CurrentUserContext.Provider value={currentUser}>
+    <div className="app_content">
+      <div className="app_page">
+        <Switch>
+          <Route exact path="/">
+            <div className="header__main">
+              <Header
+                isLoggedIn={isLoggedIn}
+                isNavPopupOpen={isNavPopupOpen}
+                setIsNavPopupOpen={setIsNavPopupOpen}
+                onNavMenuClick={handleNavMenuClick}
+                onNavPopupClose={handleNavPopupClose}
               />
-            </Route>
-            <Route path="/signin">
-              <Login
-                onLogin={handleUserLogin}
-                isSendingUserDataToServer={isSendingUserDataToServer}
-                isServerErrorLogin={isServerErrorLogin}
-                isServerErrorMessage={isServerErrorMessage}
-                emailPattern={emailPattern}
-                inputValidationMessageDefault={inputValidationMessageDefault}
-                inputValidationMessageName={inputValidationMessageName}
-                inputValidationMessageEmail={inputValidationMessageEmail}
-              />
-            </Route>
-            <Route>
-              {isLoggedIn ? <Redirect to="/movies" /> : <Redirect to="/signin" />}
-            </Route>
-            <Route>
-              <PageNotFound />
-            </Route>
-          </Switch>
-        </div>
+            </div>
+            <Main />
+            <Footer />
+          </Route>
+          <ProtectedRoute
+            path="/movies"
+            isLoggedIn={isLoggedIn}
+            component={() => {
+              return (
+                <>
+                  <Header
+                    isLoggedIn={isLoggedIn}
+                    isNavPopupOpen={isNavPopupOpen}
+                    setIsNavPopupOpen={setIsNavPopupOpen}
+                    onNavMenuClick={handleNavMenuClick}
+                    onNavPopupClose={handleNavPopupClose}
+                  />
+                  <Movies
+                    handleSearchMovies={handleSearchMovies}
+                    isCheckboxChecked={isCheckboxChecked}
+                    onCheckboxCheck={checkboxCheck}
+                    isLoading={isLoading}
+                    isError={isErrorLoadingCards}
+                    renderedCards={renderedCards}
+                    handleMovieButtonClick={handleMovieButtonClick}
+                    searchWord={searchWord}
+                  />
+                  <Footer />
+                </>
+              );
+            }}
+          />
+          <ProtectedRoute
+            path="/saved-movies"
+            isLoggedIn={isLoggedIn}
+            component={() => {
+              return (
+                <>
+                  <Header
+                    isLoggedIn={isLoggedIn}
+                    isNavPopupOpen={isNavPopupOpen}
+                    setIsNavPopupOpen={setIsNavPopupOpen}
+                    onNavMenuClick={handleNavMenuClick}
+                    onNavPopupClose={handleNavPopupClose}
+                  />
+                  <SavedMovies
+                    // cards={cards}
+                    isFilmSaved={true}
+                  />
+                  <Footer />
+                </>
+              );
+            }}
+          />
+          <ProtectedRoute
+            path="/profile"
+            isLoggedIn={isLoggedIn}
+            component={() => {
+              return (
+                <>
+                  <Header
+                    isLoggedIn={isLoggedIn}
+                    isNavPopupOpen={isNavPopupOpen}
+                    setIsNavPopupOpen={setIsNavPopupOpen}
+                    onNavMenuClick={handleNavMenuClick}
+                    onNavPopupClose={handleNavPopupClose}
+                  />
+                  <Profile
+                    isEditProfile={isEditProfile}
+                    handleEditProfile={onSetIsEditUserProfile}
+                    emailPattern={emailPattern}
+                    namePattern={namePattern}
+                    onUpdateUser={onUpdateUser}
+                    isSendingUserDataToServer={isSendingUserDataToServer}
+                    isServerError={isServerErrorProfile}
+                    serverErrorMessage={isServerErrorMessage}
+                    inputValidationMessageDefault={inputValidationMessageDefault}
+                    inputValidationMessageName={inputValidationMessageName}
+                    inputValidationMessageEmail={inputValidationMessageEmail}
+                    onLogOut={onLogOut}
+                    isProfileUpdateMessageSuccess={isProfileUpdateMessageSuccess}
+                  />
+                </>
+              );
+            }}
+          />
+          <Route path="/signup">
+            <Register
+              onRegister={handleUserRegister}
+              isSendingUserDataToServer={isSendingUserDataToServer}
+              isServerErrorRegister={isServerErrorRegister}
+              isServerErrorMessage={isServerErrorMessage}
+              emailPattern={emailPattern}
+              namePattern={namePattern}
+              inputValidationMessageDefault={inputValidationMessageDefault}
+              inputValidationMessageName={inputValidationMessageName}
+              inputValidationMessageEmail={inputValidationMessageEmail}
+            />
+          </Route>
+          <Route path="/signin">
+            <Login
+              onLogin={handleUserLogin}
+              isSendingUserDataToServer={isSendingUserDataToServer}
+              isServerErrorLogin={isServerErrorLogin}
+              isServerErrorMessage={isServerErrorMessage}
+              emailPattern={emailPattern}
+              inputValidationMessageDefault={inputValidationMessageDefault}
+              inputValidationMessageName={inputValidationMessageName}
+              inputValidationMessageEmail={inputValidationMessageEmail}
+            />
+          </Route>
+          <Route>
+            {isLoggedIn ? <Redirect to="/movies" /> : <Redirect to="/signin" />}
+          </Route>
+          <Route>
+            <PageNotFound />
+          </Route>
+        </Switch>
       </div>
-    </CurrentUserContext.Provider>
-  );
+    </div>
+  </CurrentUserContext.Provider>
+);
 }
 
 export default withRouter(App);
