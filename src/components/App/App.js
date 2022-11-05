@@ -98,7 +98,6 @@ function App() {
       .then((res) => {
         if (res) {
           setSavedMovies(res);
-          console.log(res)
         }
       })
       .catch((err) => {
@@ -132,7 +131,7 @@ function App() {
     return () => {
       document.removeEventListener('keydown', handleEscClose);
     }
-  }, [isNavPopupOpen])
+  }, [isNavPopupOpen]);
 
   function handleUserRegister(name, email, password) {
     setisSendingUserDataToServer(true);
@@ -163,7 +162,7 @@ function App() {
       .finally(() => {
         setisSendingUserDataToServer(false);
         setTimeout(() => setIsServerErrorRegister(false), 2000);
-      });;
+      });
   }
 
   function handleUserLogin(email, password) {
