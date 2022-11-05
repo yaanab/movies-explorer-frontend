@@ -60,8 +60,6 @@ function App() {
   const [renderedCards, setRenderedCards] = useState([]);
   const [isErrorLoadingCards, setIsErrorLoadingCards] = useState(false);
   const [isErrorLoadingSavedCards, setIsErrorLoadingSavedCards] = useState(false);
-  const [cardsBeforeRender, setCardsBeforeRender] = useState([])
-
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');

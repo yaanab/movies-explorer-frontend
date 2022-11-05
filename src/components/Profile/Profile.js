@@ -68,7 +68,7 @@ function Profile({
         {isEditProfile && (
           <div className="profile__buttons-area_type_update">
             <span className={`profile__update-error ${(isServerError) && "profile__update-error_block"}`}>{serverErrorMessage}</span>
-            <button type="submit" className={`profile__button_type_update ${(!isValid || isSendingUserDataToServer || values.name === currentUser.name && values.email === currentUser.email ) && "profile__button_disabled"}`} disabled={!isValid}>
+            <button type="submit" className={`profile__button_type_update ${(!isValid || isSendingUserDataToServer || (values.name === currentUser.name && values.email === currentUser.email) ) && "profile__button_disabled"}`} disabled={!isValid}>
               {!isSendingUserDataToServer ? "Сохранить" : "Cохранение..."}
             </button>
           </div>
