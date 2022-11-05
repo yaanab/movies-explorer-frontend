@@ -98,6 +98,7 @@ function App() {
       .then((res) => {
         if (res) {
           setSavedMovies(res);
+          console.log(res)
         }
       })
       .catch((err) => {
@@ -248,8 +249,6 @@ function App() {
         setTimeout(() => setIsServerErrorProfile(false), 2000);
       });
   }
-
-
 
   async function makeRenderedCardsArray(array) {
     let arrayWithSavedCards = JSON.parse(JSON.stringify(array));
@@ -416,12 +415,8 @@ function App() {
                     <SavedMovies
                       handleMovieDelete={handleMovieDelete}
                       isError={isErrorLoadingSavedCards}
-                      // handleSearchMovies={ }
-                      // isCheckboxChecked={ }
-                      // onCheckboxCheck={ }
                       isLoading={isLoadingSavedCards}
-                      renderedCards={savedMovies}
-                      // searchWord={ }
+                      cards={savedMovies}
                     />
                     <Footer />
                   </>

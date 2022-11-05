@@ -1,3 +1,4 @@
+import React, { useState, useEffect } from 'react';
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Preloader from "../PreLoader/Preloader";
@@ -5,28 +6,69 @@ import Preloader from "../PreLoader/Preloader";
 function SavedMovies({
   handleMovieDelete,
   isError,
-  handleSearchMovies,
-  isCheckboxChecked,
-  onCheckboxCheck,
   isLoading,
-  renderedCards,
-  searchWord
+  cards,
 }) {
+
+  const [searchWord, setSearchWord] = useState("");
+  const [isCheckboxChecked, setIsCheckboxChecked] = useState(false);
+  const [foundedMovies, setFoundedMovies] = useState([]);
+  const [renderedCards, setRenderedCards] = useState(cards);
+
+  useEffect(() => {
+    setRenderedCards(cards);
+  }, []);
+
+  useEffect(() => {
+    if (isCheckboxChecked && searchWord.length < 1) {
+      const filteredMovies = cards.filter((movie) => movie.duration <= 40);
+      setRenderedCards(filteredMovies);
+    } else if (isCheckboxChecked && searchWord.length >= 1) {
+      const filteredMovies = foundedMovies.filter((movie) => movie.duration <= 40);
+      setRenderedCards(filteredMovies);
+    } else {
+      setRenderedCards(cards);
+    }
+  }, [isCheckboxChecked]);
+
+  function handleSearchMovies(word) {
+    setSearchWord(word);
+    const foundedMovies = cards.filter((movie) => movie.nameRU.toLowerCase().includes(word.toLowerCase()));
+    setFoundedMovies(foundedMovies);
+
+    if (isCheckboxChecked) {
+      const filteredMovies = foundedMovies.filter((movie) => movie.duration <= 40);
+      setRenderedCards(filteredMovies);
+    } else {
+      setRenderedCards(foundedMovies);
+    }
+  }
+
+  function checkboxCheck() {
+    if (isCheckboxChecked) {
+      setIsCheckboxChecked(false);
+    } else {
+      setIsCheckboxChecked(true);
+    }
+  }
+
   return (
     <main className="saved-movies__content">
       <SearchForm
         isCheckboxChecked={isCheckboxChecked}
         onSearchMovies={handleSearchMovies}
-        onCheckboxCheck={onCheckboxCheck}
+        onCheckboxCheck={checkboxCheck}
         searchWord={searchWord}
       />
-      <MoviesCardList
-        cards={renderedCards}
-        isLoading={isLoading}
-        isMovieJS={false}
-        handleMovieDelete={handleMovieDelete}
-        isError={isError}
-      />
+      {!isLoading &&
+        <MoviesCardList
+          cards={renderedCards}
+          isLoading={isLoading}
+          isMovieJS={false}
+          handleMovieDelete={handleMovieDelete}
+          isError={isError}
+        />
+      }
       {isLoading &&
         <Preloader />
       }
