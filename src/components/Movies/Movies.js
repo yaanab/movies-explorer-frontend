@@ -28,7 +28,7 @@ function Movies({
 
   useEffect(() => {
     function onResize() {
-      setTimeout(() => setRenderedCards(sliceFirstRenderedCards(cards)), 2000);
+      setTimeout(() => setRenderedCards(sliceFirstRenderedCards(cards)), 1000);
     }
 
     window.addEventListener("resize", onResize);
