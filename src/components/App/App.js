@@ -303,6 +303,14 @@ function App() {
     }
   }
 
+  function handleMovieButtonClick(card) {
+    if (savedMovies.find((savedMovies) => savedMovies.movieId === card.id)) {
+      handleMovieDelete(card);
+    } else {
+      handleMovieSave(card);
+    }
+  }
+
   function handleMovieSave(card) {
     // const isSaved = savedMovies.find((movie) => movie.movieId === card.movieId);
     if (!card._id) {
@@ -381,7 +389,7 @@ function App() {
                       isLoading={isLoading}
                       isError={isErrorLoadingCards}
                       renderedCards={renderedCards}
-                      handleMovieSave={handleMovieSave}
+                      handleMovieButtonClick={handleMovieButtonClick}
                       searchWord={searchWord}
                     />
                     <Footer />

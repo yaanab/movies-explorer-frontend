@@ -4,14 +4,14 @@ import saveButtonInactive from "../../images/save-btn.svg";
 import saveButtonActive from "../../images/save-btn-active.svg";
 import deleteButton from "../../images/film-delete-btn.svg";
 
-function MoviesCard({ card, onMovieSave, isMovieJS }) {
+function MoviesCard({ card, handleMovieButtonClick, isMovieJS }) {
   const currentUser = React.useContext(CurrentUserContext);
   const isSaved = card.owner === currentUser._id;
   const buttonImage = (card.owner ? saveButtonActive : saveButtonInactive);
   const cardImage = (card.image.url ? (`https://api.nomoreparties.co${card.image.url}`) : card.image)
 
-  function handleMovieSave() {
-    onMovieSave(card);
+  function handleMovieButtonClick() {
+    handleMovieButtonClick(card);
   }
 
   return (
@@ -23,7 +23,7 @@ function MoviesCard({ card, onMovieSave, isMovieJS }) {
         </div>
         {isMovieJS &&
           <button aria-label="Сохранить фильм" type="button" className="movies-card__button">
-            <img onClick={handleMovieSave} className="movies-card__button-img" src={buttonImage} alt="Cохранить фильм" />
+            <img onClick={handleMovieButtonClick} className="movies-card__button-img" src={buttonImage} alt="Cохранить фильм" />
           </button>
         }
         {!isMovieJS &&

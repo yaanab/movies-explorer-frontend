@@ -1,13 +1,11 @@
-import { useEffect, useState } from 'react';
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-function MoviesCardList({ cards, onMovieSave, isButtonClicked, isMovieJS, isMovieSaved, isError }) {
-const [renderedCard, setRenderedCards] = useState([]);
+function MoviesCardList({ cards, handleMovieButtonClick, isButtonClicked, isMovieJS, isMovieSaved, isError }) {
+// const [renderedCard, setRenderedCards] = useState([]);
 
-useEffect(() => {
-  setRenderedCards(cards);
-}, [cards])
-
+// useEffect(() => {
+//   setRenderedCards(cards);
+// }, [cards])
 
   return (
     <section className="movies">
@@ -15,7 +13,7 @@ useEffect(() => {
         <>
           <div className="movies__cards">
             {renderedCard.map((card, index) => (
-              <MoviesCard key={index} card={card} isMovieJS={isMovieJS} onMovieSave={onMovieSave} isMovieSaved={isMovieSaved} isButtonClicked={isButtonClicked} />
+              <MoviesCard key={index} card={card} isMovieJS={isMovieJS} handleMovieButtonClick={handleMovieButtonClick} isMovieSaved={isMovieSaved} isButtonClicked={isButtonClicked} />
             ))}
           </div>
           <button type="button" className="movies__button-show-more">Ещё</button>
