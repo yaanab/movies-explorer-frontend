@@ -70,7 +70,10 @@ function App() {
             setIsLoggedIn(true);
           } 
         })
-        .catch((err) => console.log(err))
+        .catch((err) => {
+          onLogOut();
+          console.log(err);
+        });
     } else {
       onLogOut();
     }
@@ -81,7 +84,6 @@ function App() {
       .then((res) => {
         if (res) {
           setCurrentUser(res);
-          // history.push('/movies');
         }
       })
       .catch((err) => console.log(err));
