@@ -5,7 +5,6 @@ import { useFormWithValidation } from '../../hooks/useForm';
 function Profile({
   isEditProfile,
   handleEditProfile,
-  emailPattern,
   namePattern,
   onUpdateUser,
   isSendingUserDataToServer,
@@ -13,7 +12,6 @@ function Profile({
   serverErrorMessage,
   inputValidationMessageDefault,
   inputValidationMessageName,
-  inputValidationMessageEmail,
   onLogOut,
   isProfileUpdateMessageSuccess
 }) {
@@ -43,13 +41,13 @@ function Profile({
           </div>
           <div className="profile__input-group">
             <label className="profile__label" htmlFor="email">E-mail</label>
-            <input onChange={handleChange} className="profile__input" type="email" pattern={emailPattern} id="email" name="email" placeholder="E-mail" value={values.email || ""} required readOnly={!isEditProfile} autoComplete="on" />
+            <input onChange={handleChange} className="profile__input" type="email" id="email" name="email" placeholder="E-mail" value={values.email || ""} required readOnly={!isEditProfile} autoComplete="on" />
           </div>
           <span className={`profile__error ${(!isValid) && "profile__error_block"}`}>
             {errors.name === inputValidationMessageDefault ? inputValidationMessageName : errors.name}
           </span>
           <span className={`profile__error ${(!isValid) && "profile__error_block"}`}>
-            {errors.email === inputValidationMessageDefault ? inputValidationMessageEmail : errors.email}
+            {errors.email}
           </span>
           <span className={`profile__message-success ${(isProfileUpdateMessageSuccess) && "profile__message-success_block"}`}>
             Данные пользователя успешно обновлены!

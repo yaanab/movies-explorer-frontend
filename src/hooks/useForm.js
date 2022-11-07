@@ -1,4 +1,6 @@
 import { useState, useCallback } from "react";
+import validator from 'validator';
+const { inputValidationMessageEmail } = require('../utils/Constant');
 
 //хук управления формой
 export function useForm(inputValues) {
@@ -6,10 +8,10 @@ export function useForm(inputValues) {
 
   const handleChange = (event) => {
     const { value, name } = event.target;
-    setValues({...values, [name]: value});
+    setValues({ ...values, [name]: value });
   };
 
-  return {values, handleChange, setValues};
+  return { values, handleChange, setValues };
 }
 
 //хук управления формой и валидации формы
@@ -22,10 +24,21 @@ export function useFormWithValidation(inputValues) {
     const target = event.target;
     const value = target.value;
     const name = target.name;
-    setValues({...values, [name]: value});
-    setErrors({...errors, [name]: target.validationMessage });
+
+    if (name === "email") {
+      if (validator.isEmail(value)) {
+        setValues({ email: value });
+        event.target.setCustomValidity("");
+      } else {
+        event.target.setCustomValidity(inputValidationMessageEmail);
+      }
+    }
+
+    setValues({ ...values, [name]: value });
+    setErrors({ ...errors, [name]: target.validationMessage });
     setIsValid(target.closest("form").checkValidity());
-  };
+
+  }
 
   const resetForm = useCallback(
     (newValues = {}, newErrors = {}, newIsValid = false) => {

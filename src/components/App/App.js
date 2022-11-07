@@ -23,7 +23,6 @@ function App() {
     namePattern,
     inputValidationMessageDefault,
     inputValidationMessageName,
-    inputValidationMessageEmail,
     serverConflictError,
     serverValidationError,
     serverErrorMain,
@@ -429,7 +428,6 @@ function App() {
                     <Profile
                       isEditProfile={isEditProfile}
                       handleEditProfile={onSetIsEditUserProfile}
-                      emailPattern={emailPattern}
                       namePattern={namePattern}
                       onUpdateUser={onUpdateUser}
                       isSendingUserDataToServer={isSendingUserDataToServer}
@@ -437,7 +435,6 @@ function App() {
                       serverErrorMessage={isServerErrorMessage}
                       inputValidationMessageDefault={inputValidationMessageDefault}
                       inputValidationMessageName={inputValidationMessageName}
-                      inputValidationMessageEmail={inputValidationMessageEmail}
                       onLogOut={onLogOut}
                       isProfileUpdateMessageSuccess={isProfileUpdateMessageSuccess}
                     />
@@ -451,11 +448,9 @@ function App() {
                 isSendingUserDataToServer={isSendingUserDataToServer}
                 isServerErrorRegister={isServerErrorRegister}
                 isServerErrorMessage={isServerErrorMessage}
-                emailPattern={emailPattern}
                 namePattern={namePattern}
                 inputValidationMessageDefault={inputValidationMessageDefault}
                 inputValidationMessageName={inputValidationMessageName}
-                inputValidationMessageEmail={inputValidationMessageEmail}
               />
             </Route>
             <Route path="/signin">
@@ -464,10 +459,6 @@ function App() {
                 isSendingUserDataToServer={isSendingUserDataToServer}
                 isServerErrorLogin={isServerErrorLogin}
                 isServerErrorMessage={isServerErrorMessage}
-                emailPattern={emailPattern}
-                inputValidationMessageDefault={inputValidationMessageDefault}
-                inputValidationMessageName={inputValidationMessageName}
-                inputValidationMessageEmail={inputValidationMessageEmail}
               />
             </Route>
             <Route>

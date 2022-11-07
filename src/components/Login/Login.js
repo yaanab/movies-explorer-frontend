@@ -1,15 +1,12 @@
 import AuthForm from "../AuthForm/AuthForm";
 import { useFormWithValidation } from '../../hooks/useForm';
 
-function Login({ 
+function Login({
   onLogin,
   isSendingUserDataToServer,
   isServerErrorLogin,
-  isServerErrorMessage,
-  emailPattern,
-  inputValidationMessageDefault,
-  inputValidationMessageEmail
- }) {
+  isServerErrorMessage
+}) {
   const { values, handleChange, errors, isValid } = useFormWithValidation({});
 
   function handleSubmit(e) {
@@ -33,8 +30,8 @@ function Login({
         linkText="Регистрация">
         <div className="auth-form__input-group">
           <label className="auth-form__label" htmlFor="email">E-mail</label>
-          <input className="auth-form__input" onChange={handleChange} value={values.email || ""} type="email" pattern={emailPattern}  id="email" name="email" required autoComplete="on" />
-          <span className={`auth-form__error ${(!isValid) && "auth-form__error_block"}`}>{inputValidationMessageDefault ? inputValidationMessageEmail : errors.email}</span>
+          <input className="auth-form__input" onChange={handleChange} value={values.email || ""} type="email" id="email" name="email" required autoComplete="on" />
+          <span className={`auth-form__error ${(!isValid) && "auth-form__error_block"}`}>{errors.email}</span>
         </div>
         <div className="auth-form__input-group">
           <label className="auth-form__label" htmlFor="password">Пароль</label>
