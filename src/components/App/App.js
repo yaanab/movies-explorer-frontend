@@ -81,7 +81,7 @@ function App() {
       .then((res) => {
         if (res) {
           setCurrentUser(res);
-          history.push('/movies');
+          // history.push('/movies');
         }
       })
       .catch((err) => console.log(err));
@@ -481,7 +481,7 @@ function App() {
             {/* <Route>
               {isLoggedIn ? <Redirect to="/movies" /> : <Redirect to="/signin" />}
             </Route> */}
-            <Route>
+            <Route path="*">
               <PageNotFound />
             </Route>
           </Switch>
