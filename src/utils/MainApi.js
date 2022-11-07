@@ -60,6 +60,17 @@ export const getUserInfo = () => {
     .then(res => testResponse(res));
 }
 
+export const getContent = () => {
+  return fetch(`${BASE_URL}/users/me`, {
+    credentials: 'include',
+    method: 'GET',
+    headers: {
+      'Content-Type': 'application/json',
+    }
+  })
+    .then(res => testResponse(res));
+}
+
 export const editProfile = (name, email) => {
   return fetch(`${BASE_URL}/users/me`, {
     credentials: 'include',

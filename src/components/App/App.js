@@ -64,16 +64,27 @@ function App() {
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
     if (jwt) {
-      mainApi.getUserInfo()
+      mainApi.getContent(jwt)
         .then((res) => {
           if (res) {
-            setCurrentUser(res);
             setIsLoggedIn(true);
-            history.push('/movies');
-          }
+          } 
         })
-        .catch((err) => console.log(err));
+        .catch((err) => console.log(err))
+    } else {
+      onLogOut();
     }
+  }, []);
+
+  useEffect(() => {
+    mainApi.getUserInfo()
+      .then((res) => {
+        if (res) {
+          setCurrentUser(res);
+          history.push('/movies');
+        }
+      })
+      .catch((err) => console.log(err));
   }, [isLoggedIn]);
 
   useEffect(() => {
@@ -447,6 +458,7 @@ function App() {
               }}
             />
             <Route path="/signup">
+              {isLoggedIn && <Redirect to="/" />}
               <Register
                 onRegister={handleUserRegister}
                 isSendingUserDataToServer={isSendingUserDataToServer}
@@ -458,6 +470,7 @@ function App() {
               />
             </Route>
             <Route path="/signin">
+              {isLoggedIn && <Redirect to="/" />}
               <Login
                 onLogin={handleUserLogin}
                 isSendingUserDataToServer={isSendingUserDataToServer}
@@ -465,9 +478,9 @@ function App() {
                 isServerErrorMessage={isServerErrorMessage}
               />
             </Route>
-            <Route>
+            {/* <Route>
               {isLoggedIn ? <Redirect to="/movies" /> : <Redirect to="/signin" />}
-            </Route>
+            </Route> */}
             <Route>
               <PageNotFound />
             </Route>
