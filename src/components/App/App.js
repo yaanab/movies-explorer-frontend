@@ -19,7 +19,6 @@ import * as moviesApi from '../../utils/MoviesApi';
 function App() {
 
   const {
-    emailPattern,
     namePattern,
     inputValidationMessageDefault,
     inputValidationMessageName,
@@ -60,6 +59,7 @@ function App() {
   const [renderedCards, setRenderedCards] = useState([]);
   const [isErrorLoadingCards, setIsErrorLoadingCards] = useState(false);
   const [isErrorLoadingSavedCards, setIsErrorLoadingSavedCards] = useState(false);
+  const [isCardsSearching, setIsCardsSearching] = useState(false);
 
   useEffect(() => {
     const jwt = localStorage.getItem('jwt');
@@ -77,15 +77,21 @@ function App() {
   }, [isLoggedIn]);
 
   useEffect(() => {
-    if (cards.length < 1) {
+    if (cards.length < 1 && isLoggedIn) {
+      setIsLoadingCards(true);
       moviesApi.getMovies()
         .then((cards) => {
           setCards(cards);
           localStorage.setItem("cards", JSON.stringify(cards));
+          setIsErrorLoadingCards(false);
         })
         .catch((err) => {
           console.log(err);
           setIsErrorLoadingCards(true);
+        })
+        .finally(() => {
+          setIsLoadingCards(false);
+          setIsCardsSearching(true);
         });
     }
   }, [isLoggedIn]);
@@ -260,8 +266,6 @@ function App() {
   }, [isCheckboxChecked]);
 
   function handleSearchMovies(word) {
-    setIsLoadingCards(true);
-
     localStorage.removeItem("searchWord");
     localStorage.removeItem("foundedMovies");
     localStorage.removeItem("filteredMovies");
@@ -276,12 +280,12 @@ function App() {
     if (isCheckboxChecked) {
       const filteredMovies = foundedMovies.filter((movie) => movie.duration <= 40);
       setRenderedCards(filteredMovies);
+      setIsCardsSearching(false);
       localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
-      setIsLoadingCards(false);
     } else {
       localStorage.setItem("isCheckboxChecked", JSON.stringify(false));
       setRenderedCards(foundedMovies);
-      setIsLoadingCards(false);
+      setIsCardsSearching(false);
     }
   }
 
@@ -379,7 +383,7 @@ function App() {
                       handleMovieButtonClick={handleMovieButtonClick}
                       searchWord={searchWord}
                       savedMovies={savedMovies}
-                      isLoadingCardSave={isLoadingCardSave}
+                      isCardsSearching={isCardsSearching}
                     />
                     <Footer />
                   </>
