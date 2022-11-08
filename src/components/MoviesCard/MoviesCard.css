@@ -48,6 +48,11 @@
   background-color: transparent;
   cursor: pointer;
   transition: 0.2s ease-in-out;
+  background: url(../../images/save-btn.svg) center no-repeat;
+}
+
+.movies-card__button_active {
+  background: url(../../images/save-btn-active.svg) center no-repeat;
 }
 
 .movies-card__button-img {

@@ -1,4 +1,4 @@
-import { Link, withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import logo from '../../images/header-logo.svg';
 import menuIcon from '../../images/menu-icon.svg';
 import Navigation from '../Navigation/Navigation';
@@ -57,4 +57,4 @@ function Header({
   );
 }
 
-export default withRouter(Header);
+export default Header;

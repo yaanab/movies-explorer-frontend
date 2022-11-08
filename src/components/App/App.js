@@ -68,7 +68,7 @@ function App() {
         .then((res) => {
           if (res) {
             setIsLoggedIn(true);
-          } 
+          }
         })
         .catch((err) => {
           onLogOut();
@@ -312,14 +312,6 @@ function App() {
     }
   }
 
-  function handleMovieButtonClick(card) {
-    if (savedMovies.find((savedMovie) => savedMovie.movieId === card.id)) {
-      handleMovieDelete(card);
-    } else {
-      handleMovieSave(card);
-    }
-  }
-
   function handleMovieSave(card) {
     setIsLoadingCardSave(true);
     mainApi
@@ -393,7 +385,8 @@ function App() {
                       isLoading={isLoadingCards}
                       isError={isErrorLoadingCards}
                       cards={renderedCards}
-                      handleMovieButtonClick={handleMovieButtonClick}
+                      handleMovieSave={handleMovieSave}
+                      handleMovieDelete={handleMovieDelete}
                       searchWord={searchWord}
                       savedMovies={savedMovies}
                       isCardsSearching={isCardsSearching}
@@ -480,9 +473,6 @@ function App() {
                 isServerErrorMessage={isServerErrorMessage}
               />
             </Route>
-            {/* <Route>
-              {isLoggedIn ? <Redirect to="/movies" /> : <Redirect to="/signin" />}
-            </Route> */}
             <Route path="*">
               <PageNotFound />
             </Route>

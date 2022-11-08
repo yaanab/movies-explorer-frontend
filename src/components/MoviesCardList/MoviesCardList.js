@@ -1,8 +1,9 @@
 import MoviesCard from '../MoviesCard/MoviesCard';
 
+
 function MoviesCardList({
   cards,
-  handleMovieButtonClick,
+  handleMovieSave,
   isMovieJS,
   isError,
   handleMovieDelete,
@@ -12,6 +13,7 @@ function MoviesCardList({
   isLoadingCardSave,
   isCardsSearching
 }) {
+
   return (
     <section className="movies">
       {cards.length > 0 && !isError &&
@@ -21,7 +23,7 @@ function MoviesCardList({
               key={card.id ? card.id : card._id}
               card={card}
               isMovieJS={isMovieJS}
-              handleMovieButtonClick={handleMovieButtonClick}
+              handleMovieSave={handleMovieSave}
               handleMovieDelete={handleMovieDelete}
               savedMovies={savedMovies}
               isLoadingCardSave={isLoadingCardSave}

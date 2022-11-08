@@ -10,21 +10,14 @@ function Movies({
   isLoading,
   isError,
   cards,
-  handleMovieButtonClick,
   searchWord,
   savedMovies,
-  isCardsSearching
+  isCardsSearching,
+  handleMovieSave,
+  handleMovieDelete
 }) {
   const [renderedCards, setRenderedCards] = useState([]);
   const [isAllCardsRendered, setIsAllCardsRendered] = useState(false);
-
-  useEffect(() => {
-    setRenderedCards(sliceFirstRenderedCards(cards));
-  }, [cards]);
-
-  useEffect(() => {
-    setIsAllCardsRendered(cards.length === renderedCards.length);
-  }, [cards, renderedCards]);
 
   useEffect(() => {
     function onResize() {
@@ -37,6 +30,14 @@ function Movies({
       window.removeEventListener("resize", onResize);
     }
   }, []);
+
+  useEffect(() => {
+    setRenderedCards(sliceFirstRenderedCards(cards));
+  }, [cards]);
+
+  useEffect(() => {
+    setIsAllCardsRendered(cards.length === renderedCards.length);
+  }, [cards, renderedCards]);
 
   function sliceFirstRenderedCards(cards) {
     const screenWidth = window.screen.width;
@@ -78,7 +79,6 @@ function Movies({
       {!isLoading &&
         <MoviesCardList
           cards={renderedCards}
-          handleMovieButtonClick={handleMovieButtonClick}
           isMovieJS={true}
           isError={isError}
           handleShowMoreButtonClick={handleShowMoreButtonClick}
@@ -86,6 +86,8 @@ function Movies({
           savedMovies={savedMovies}
           isLoading={isLoading}
           isCardsSearching={isCardsSearching}
+          handleMovieSave={handleMovieSave}
+          handleMovieDelete={handleMovieDelete}
         />
       }
       {isLoading &&

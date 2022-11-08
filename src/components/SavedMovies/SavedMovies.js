@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { withRouter } from 'react-router-dom';
 import SearchForm from "../SearchForm/SearchForm";
 import MoviesCardList from "../MoviesCardList/MoviesCardList";
 import Preloader from "../PreLoader/Preloader";
@@ -78,4 +79,4 @@ function SavedMovies({
   );
 }
 
-export default SavedMovies;
+export default withRouter(SavedMovies);
