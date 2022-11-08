@@ -19,15 +19,16 @@ import * as moviesApi from '../../utils/MoviesApi';
 function App() {
 
   const {
-    namePattern,
-    inputValidationMessageDefault,
-    inputValidationMessageName,
-    serverConflictError,
-    serverValidationError,
-    serverErrorMain,
-    serverErrorToken,
-    serverErrorLogin,
-    serverErrorUpdateUser,
+    PATTERN_NAME,
+    INPUT_VALIDATION_MESSAGE_DEFAULT,
+    INPUT_VALIDATION_MESSAGE_NAME,
+    SERVER_ERROR_MESSAGE_CONFLICT,
+    SERVER_ERROR_MESSAGE_VALIDATION,
+    SERVER_ERROR_MESSAGE_500,
+    SERVER_ERROR_MESSAGE_TOKEN,
+    SERVER_ERROR_MESSAGE_LOGIN,
+    SERVER_ERROR_MESSAGE_USER_UPDATE,
+    SHORT_MOVIE_DURATION
   } = require('../../utils/Constant');
 
   const { resetForm } = useFormWithValidation({});
@@ -160,19 +161,19 @@ function App() {
           setIsServerErrorLogin(false);
           resetForm();
         } else if (!res.token) {
-          setIsServerErrorMessage(serverErrorToken);
+          setIsServerErrorMessage(SERVER_ERROR_MESSAGE_TOKEN);
           setIsServerErrorLogin(true);
         }
       })
       .catch((err) => {
         if (err === "Ошибка: 409") {
-          setIsServerErrorMessage(serverConflictError);
+          setIsServerErrorMessage(SERVER_ERROR_MESSAGE_CONFLICT);
         } else if (err === "Ошибка: 400") {
-          setIsServerErrorMessage(serverValidationError);
+          setIsServerErrorMessage(SERVER_ERROR_MESSAGE_VALIDATION);
         } else if (err === "Ошибка: 401") {
-          setIsServerErrorMessage(serverErrorLogin);
+          setIsServerErrorMessage(SERVER_ERROR_MESSAGE_LOGIN);
         } else {
-          setIsServerErrorMessage(serverErrorMain);
+          setIsServerErrorMessage(SERVER_ERROR_MESSAGE_500);
         }
         setIsServerErrorRegister(true);
       })
@@ -195,15 +196,15 @@ function App() {
           setIsServerErrorLogin(false);
           resetForm();
         } else if (!res.token) {
-          setIsServerErrorMessage(serverErrorToken);
+          setIsServerErrorMessage(SERVER_ERROR_MESSAGE_TOKEN);
           setIsServerErrorLogin(true);
         }
       })
       .catch((err) => {
         if (err === "Ошибка: 401") {
-          setIsServerErrorMessage(serverErrorLogin);
+          setIsServerErrorMessage(SERVER_ERROR_MESSAGE_LOGIN);
         } else {
-          setIsServerErrorMessage(serverErrorMain);
+          setIsServerErrorMessage(SERVER_ERROR_MESSAGE_500);
         }
         setIsServerErrorLogin(true);
       })
@@ -254,11 +255,11 @@ function App() {
       .catch((err) => {
         console.log(err)
         if (err === "Ошибка: 409") {
-          setIsServerErrorMessage(serverConflictError);
+          setIsServerErrorMessage(SERVER_ERROR_MESSAGE_CONFLICT);
         } else if (err === "Ошибка: 400") {
-          setIsServerErrorMessage(serverValidationError);
+          setIsServerErrorMessage(SERVER_ERROR_MESSAGE_VALIDATION);
         } else {
-          setIsServerErrorMessage(serverErrorUpdateUser);
+          setIsServerErrorMessage(SERVER_ERROR_MESSAGE_USER_UPDATE);
         }
         setIsServerErrorProfile(true);
       })
@@ -270,7 +271,7 @@ function App() {
 
   useEffect(() => {
     if (isCheckboxChecked) {
-      const filteredMovies = foundedMovies.filter((movie) => movie.duration <= 40);
+      const filteredMovies = foundedMovies.filter((movie) => movie.duration <= SHORT_MOVIE_DURATION);
       setRenderedCards(filteredMovies);
       localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
     } else {
@@ -291,7 +292,7 @@ function App() {
     localStorage.setItem("foundedMovies", JSON.stringify(foundedMovies));
 
     if (isCheckboxChecked) {
-      const filteredMovies = foundedMovies.filter((movie) => movie.duration <= 40);
+      const filteredMovies = foundedMovies.filter((movie) => movie.duration <= SHORT_MOVIE_DURATION);
       setRenderedCards(filteredMovies);
       setIsCardsSearching(false);
       localStorage.setItem("filteredMovies", JSON.stringify(filteredMovies));
@@ -438,13 +439,13 @@ function App() {
                     <Profile
                       isEditProfile={isEditProfile}
                       handleEditProfile={onSetIsEditUserProfile}
-                      namePattern={namePattern}
+                      namePattern={PATTERN_NAME}
                       onUpdateUser={onUpdateUser}
                       isSendingUserDataToServer={isSendingUserDataToServer}
                       isServerError={isServerErrorProfile}
                       serverErrorMessage={isServerErrorMessage}
-                      inputValidationMessageDefault={inputValidationMessageDefault}
-                      inputValidationMessageName={inputValidationMessageName}
+                      inputValidationMessageDefault={INPUT_VALIDATION_MESSAGE_DEFAULT}
+                      inputValidationMessageName={INPUT_VALIDATION_MESSAGE_NAME}
                       onLogOut={onLogOut}
                       isProfileUpdateMessageSuccess={isProfileUpdateMessageSuccess}
                     />
@@ -459,9 +460,9 @@ function App() {
                 isSendingUserDataToServer={isSendingUserDataToServer}
                 isServerErrorRegister={isServerErrorRegister}
                 isServerErrorMessage={isServerErrorMessage}
-                namePattern={namePattern}
-                inputValidationMessageDefault={inputValidationMessageDefault}
-                inputValidationMessageName={inputValidationMessageName}
+                namePattern={PATTERN_NAME}
+                inputValidationMessageDefault={INPUT_VALIDATION_MESSAGE_DEFAULT}
+                inputValidationMessageName={INPUT_VALIDATION_MESSAGE_NAME}
               />
             </Route>
             <Route path="/signin">

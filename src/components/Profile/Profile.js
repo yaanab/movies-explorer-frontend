@@ -37,11 +37,11 @@ function Profile({
         <div className="profile__inputs">
           <div className="profile__input-group profile__input-group_underlined">
             <label className="profile__label" htmlFor="name">Имя</label>
-            <input onChange={handleChange} className="profile__input" type="text" pattern={namePattern} id="name" name="name" placeholder="Имя" value={values.name || ""} required readOnly={!isEditProfile}  minLength="2" maxLength="30" autoComplete="on" />
+            <input onChange={handleChange} className="profile__input" type="text" pattern={namePattern} id="name" name="name" placeholder="Имя" value={values.name || ""} required readOnly={!isEditProfile}  minLength="2" maxLength="30" autoComplete="on" disabled={isSendingUserDataToServer} />
           </div>
           <div className="profile__input-group">
             <label className="profile__label" htmlFor="email">E-mail</label>
-            <input onChange={handleChange} className="profile__input" type="email" id="email" name="email" placeholder="E-mail" value={values.email || ""} required readOnly={!isEditProfile} autoComplete="on" />
+            <input onChange={handleChange} className="profile__input" type="email" id="email" name="email" placeholder="E-mail" value={values.email || ""} required readOnly={!isEditProfile} autoComplete="on" disabled={isSendingUserDataToServer} />
           </div>
           <span className={`profile__error ${(!isValid) && "profile__error_block"}`}>
             {errors.name === inputValidationMessageDefault ? inputValidationMessageName : errors.name}

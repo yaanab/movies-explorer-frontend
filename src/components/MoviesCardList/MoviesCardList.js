@@ -1,6 +1,5 @@
 import MoviesCard from '../MoviesCard/MoviesCard';
 
-
 function MoviesCardList({
   cards,
   handleMovieSave,

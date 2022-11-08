@@ -24,11 +24,7 @@ function MoviesCard({
     const cardImage = (card.image.url ? (`https://api.nomoreparties.co${card.image.url}`) : card.image);
     setCardImage(cardImage);
     setButtonImage(`movies-card__button ${isSaved && 'movies-card__button_active'}`);
-  }, [card]);
-
-  useEffect(() => {
-    setButtonImage(`movies-card__button ${isSaved && 'movies-card__button_active'}`);
-  }, [savedMovies]);
+  }, []);
 
   function onClick(card) {
     if (isSaved) {

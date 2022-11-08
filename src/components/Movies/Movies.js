@@ -16,6 +16,16 @@ function Movies({
   handleMovieSave,
   handleMovieDelete
 }) {
+const {
+  SCREEN_WIDTH_LAPTOP,
+  SCREEN_WIDTH_TABLET,
+  CARDS_FIRST_RENDERED_LAPTOP,
+  CARDS_FIRST_RENDERED_TABLET,
+  CARDS_FIRST_RENDERED_MOBILE,
+  CARDS_SHOW_MORE_TABLET_MOBILE,
+  CARDS_SHOW_MORE_LAPTOP
+} = require('../../utils/Constant');
+
   const [renderedCards, setRenderedCards] = useState([]);
   const [isAllCardsRendered, setIsAllCardsRendered] = useState(false);
 
@@ -41,14 +51,14 @@ function Movies({
 
   function sliceFirstRenderedCards(cards) {
     const screenWidth = window.screen.width;
-    if (cards.length > 5 && screenWidth < 656) {
-      return cards.slice(0, 5);
+    if (cards.length > CARDS_FIRST_RENDERED_MOBILE && screenWidth < SCREEN_WIDTH_TABLET) {
+      return cards.slice(0, CARDS_FIRST_RENDERED_MOBILE);
     }
-    if (cards.length > 8 && screenWidth >= 656 && screenWidth < 1279) {
-      return cards.slice(0, 8);
+    if (cards.length > CARDS_FIRST_RENDERED_TABLET && screenWidth >= SCREEN_WIDTH_TABLET && screenWidth < SCREEN_WIDTH_LAPTOP) {
+      return cards.slice(0, CARDS_FIRST_RENDERED_TABLET);
     }
-    if (cards.length > 12 && screenWidth >= 1279) {
-      return cards.slice(0, 12);
+    if (cards.length > CARDS_FIRST_RENDERED_LAPTOP && screenWidth >= SCREEN_WIDTH_LAPTOP) {
+      return cards.slice(0, CARDS_FIRST_RENDERED_LAPTOP);
     }
     return cards;
   }
@@ -56,11 +66,11 @@ function Movies({
   function handleShowMoreButtonClick() {
     const screenWidth = window.screen.width;
 
-    if (screenWidth < 1279 && (cards.length - renderedCards.length > 2)) {
-      setRenderedCards(cards.slice(0, renderedCards.length + 2));
+    if (screenWidth < SCREEN_WIDTH_LAPTOP && (cards.length - renderedCards.length > 2)) {
+      setRenderedCards(cards.slice(0, renderedCards.length + CARDS_SHOW_MORE_TABLET_MOBILE));
       return;
-    } else if (screenWidth >= 1279 && (cards.length - renderedCards.length > 3)) {
-      setRenderedCards(cards.slice(0, renderedCards.length + 3));
+    } else if (screenWidth >= SCREEN_WIDTH_LAPTOP && (cards.length - renderedCards.length > CARDS_SHOW_MORE_LAPTOP)) {
+      setRenderedCards(cards.slice(0, renderedCards.length + CARDS_SHOW_MORE_LAPTOP));
       return;
     } else {
       setRenderedCards(cards);

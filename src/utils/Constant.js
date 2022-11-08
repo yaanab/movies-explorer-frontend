@@ -1,25 +1,39 @@
-const emailPattern = "([A-z0-9_.-]{1,})@([A-z0-9_.-]{1,}).([A-z]{2,8})";
-const namePattern = "^[A-Za-zА-Яа-яё -]+$";
-const inputValidationMessageDefault = "Введите данные в указанном формате.";
-const inputValidationMessageName = "Имя должно содержать только латиницу, кириллицу, пробел или дефис";
-const inputValidationMessageEmail = "Введите данные в формате e-mail";
-const serverConflictError = "Пользователь с таким email уже существует.";
-const serverValidationError = "Переданы некорректные данные.";
-const serverErrorMain = "На сервере произошла ошибка.";
-const serverErrorToken = "При авторизации произошла ошибка.";
-const serverErrorLogin = "Неправильные email или пароль.";
-const serverErrorUpdateUser = "При обновлении профиля произошла ошибка.";
+const PATTERN_NAME = "^[A-Za-zА-Яа-яё -]+$";
+const INPUT_VALIDATION_MESSAGE_DEFAULT = "Введите данные в указанном формате.";
+const INPUT_VALIDATION_MESSAGE_NAME = "Имя должно содержать только латиницу, кириллицу, пробел или дефис";
+const INPUT_VALIDATION_MESSAGE_EMAIL = "Введите данные в формате e-mail";
+const SERVER_ERROR_MESSAGE_CONFLICT = "Пользователь с таким email уже существует.";
+const SERVER_ERROR_MESSAGE_VALIDATION = "Переданы некорректные данные.";
+const SERVER_ERROR_MESSAGE_500 = "На сервере произошла ошибка.";
+const SERVER_ERROR_MESSAGE_TOKEN = "При авторизации произошла ошибка.";
+const SERVER_ERROR_MESSAGE_LOGIN = "Неправильные email или пароль.";
+const SERVER_ERROR_MESSAGE_USER_UPDATE  = "При обновлении профиля произошла ошибка.";
+const SHORT_MOVIE_DURATION = 40;
+const SCREEN_WIDTH_LAPTOP = 1279;
+const SCREEN_WIDTH_TABLET = 656;
+const CARDS_FIRST_RENDERED_LAPTOP = 12;
+const CARDS_FIRST_RENDERED_TABLET = 8;
+const CARDS_FIRST_RENDERED_MOBILE = 5;
+const CARDS_SHOW_MORE_TABLET_MOBILE = 2;
+const CARDS_SHOW_MORE_LAPTOP = 3;
 
 module.exports = {
-  emailPattern,
-  namePattern,
-  inputValidationMessageDefault,
-  inputValidationMessageName,
-  inputValidationMessageEmail,
-  serverConflictError,
-  serverValidationError,
-  serverErrorMain,
-  serverErrorToken,
-  serverErrorLogin,
-  serverErrorUpdateUser,
+  PATTERN_NAME,
+  INPUT_VALIDATION_MESSAGE_DEFAULT,
+  INPUT_VALIDATION_MESSAGE_NAME,
+  INPUT_VALIDATION_MESSAGE_EMAIL,
+  SERVER_ERROR_MESSAGE_CONFLICT,
+  SERVER_ERROR_MESSAGE_VALIDATION,
+  SERVER_ERROR_MESSAGE_500,
+  SERVER_ERROR_MESSAGE_TOKEN,
+  SERVER_ERROR_MESSAGE_LOGIN,
+  SERVER_ERROR_MESSAGE_USER_UPDATE,
+  SHORT_MOVIE_DURATION,
+  SCREEN_WIDTH_LAPTOP,
+  SCREEN_WIDTH_TABLET,
+  CARDS_FIRST_RENDERED_LAPTOP,
+  CARDS_FIRST_RENDERED_TABLET,
+  CARDS_FIRST_RENDERED_MOBILE,
+  CARDS_SHOW_MORE_TABLET_MOBILE,
+  CARDS_SHOW_MORE_LAPTOP
 };

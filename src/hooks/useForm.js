@@ -1,6 +1,6 @@
 import { useState, useCallback } from "react";
 import validator from 'validator';
-const { inputValidationMessageEmail } = require('../utils/Constant');
+const { INPUT_VALIDATION_MESSAGE_EMAIL } = require('../utils/Constant');
 
 //хук управления формой
 export function useForm(inputValues) {
@@ -30,7 +30,7 @@ export function useFormWithValidation(inputValues) {
         setValues({ email: value });
         event.target.setCustomValidity("");
       } else {
-        event.target.setCustomValidity(inputValidationMessageEmail);
+        event.target.setCustomValidity(INPUT_VALIDATION_MESSAGE_EMAIL);
       }
     }
 
