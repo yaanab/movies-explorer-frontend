@@ -15,6 +15,7 @@ function MoviesCard({
   const [duration, setDuration] = useState("");
   const [cardImage, setCardImage] = useState("");
   const [title, setTitle] = useState("");
+
   const isSaved = savedMovies.some((savedMovie) => savedMovie.movieId === card.id);
 
   useEffect(() => {

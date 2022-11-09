@@ -31,7 +31,7 @@ function SavedMovies({
     } else {
       setRenderedCards(cards);
     }
-  }, [isCheckboxChecked]);
+  }, [isCheckboxChecked, cards]);
 
   function handleSearchMovies(word) {
     setSearchWord(word);
