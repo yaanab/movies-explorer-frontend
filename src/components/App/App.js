@@ -81,13 +81,19 @@ function App() {
   }, []);
 
   useEffect(() => {
-    mainApi.getUserInfo()
-      .then((res) => {
-        if (res) {
-          setCurrentUser(res);
-        }
+    setIsLoadingSavedCards(true)
+    Promise.all([mainApi.getUserInfo(), mainApi.getSavedMovies()])
+      .then(([userData, savedMovies]) => {
+        setCurrentUser(userData);
+        setSavedMovies(savedMovies);
       })
-      .catch((err) => console.log(err));
+      .catch((err) => {
+        console.log(err)
+        setIsErrorLoadingSavedCards(true);
+      })
+      .finally(() => {
+        setIsLoadingSavedCards(false);
+      });
   }, [isLoggedIn]);
 
   useEffect(() => {
@@ -108,23 +114,6 @@ function App() {
           setIsCardsSearching(true);
         });
     }
-  }, [isLoggedIn]);
-
-  useEffect(() => {
-    setIsLoadingSavedCards(true);
-    mainApi.getSavedMovies()
-      .then((res) => {
-        if (res) {
-          setSavedMovies(res);
-        }
-      })
-      .catch((err) => {
-        console.log(err);
-        setIsErrorLoadingSavedCards(true);
-      })
-      .finally(() => {
-        setIsLoadingSavedCards(false);
-      });
   }, [isLoggedIn]);
 
   function handleNavMenuClick() {
